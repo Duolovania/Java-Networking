@@ -1,16 +1,14 @@
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MainWindow extends javax.swing.JDialog {
+public class SecondaryWindow extends javax.swing.JDialog {
     private javax.swing.JPanel contentPane;
-    private javax.swing.JButton buttonCancel, button1, button2, button3, button4, button5, button6,
-            button7, button8, button9, button10, button11, button12, button13, button14, button15, button16, button17, button18, button19, button20;
+    private javax.swing.JButton buttonCancel, button1, processButton, button2;
     private javax.swing.JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
-    private javax.swing.JTextArea textArea1, textArea2;
+    private javax.swing.JTextArea textArea1;
     private  javax.swing.JTable table1;
+    private javax.swing.JComboBox comboBox1;
 
-    public MainWindow() {
+    public SecondaryWindow() {
         setContentPane(contentPane);
         setModal(true);
 
@@ -42,7 +40,7 @@ public class MainWindow extends javax.swing.JDialog {
     }
 
     public static void main(String[] args) {
-        MainWindow dialog = new MainWindow();
+        SecondaryWindow dialog = new SecondaryWindow();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
