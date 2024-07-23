@@ -20,6 +20,12 @@ public class MainWindow extends javax.swing.JDialog {
             }
         });
 
+        button16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onPopup();
+            }
+        });
+
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -39,6 +45,12 @@ public class MainWindow extends javax.swing.JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    private void onPopup() {
+        SecondaryWindow dialog = new SecondaryWindow();
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
     public static void main(String[] args) {
