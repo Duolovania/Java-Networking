@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.table.*;
 
 public class MainWindow extends javax.swing.JDialog {
     private javax.swing.JPanel contentPane;
@@ -8,7 +9,7 @@ public class MainWindow extends javax.swing.JDialog {
             button7, button8, button9, button10, button11, button12, button13, button14, button15, button16, button17, button18, button19, button20;
     private javax.swing.JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
     private javax.swing.JTextArea textArea1, textArea2;
-    private  javax.swing.JTable table1;
+    private JScrollPane tableScrollPane;
 
     public MainWindow() {
         setContentPane(contentPane);
@@ -58,5 +59,21 @@ public class MainWindow extends javax.swing.JDialog {
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+
+        Object[][] data = {
+                {"Kathy", "Smith",
+                        "Snowboarding", 'C', 5, 5, 5, false},
+                {"Kathy", "Smith",
+                        "Snowboarding", 'B', 5, 5, 5, true},
+                {"Kathy", "Smith",
+                        "Snowboarding", 'L', 5, 5, 5, false}
+        };
+
+        ArchiveCDTable tableModel = new ArchiveCDTable(data);
+        tableScrollPane = new JScrollPane(tableModel.getTable());
     }
 }
