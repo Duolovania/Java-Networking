@@ -3,25 +3,23 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.table.*;
 import javax.xml.crypto.Data;
+import java.awt.event.*;
 
 public class MainWindow extends javax.swing.JDialog {
-    private javax.swing.JPanel contentPane;
-    private javax.swing.JButton buttonCancel, button1, button2, button3, button4, button5, button6,
+    private JPanel contentPane;
+    private JButton buttonCancel, button1, button2, button3, button4, button5, button6,
             button7, button8, button9, button10, button11, button12, button13, button14, button15, button16, button17, button18, button19, button20;
-    private javax.swing.JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
-    private javax.swing.JTextArea textArea1, textArea2;
+    private JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8, textField9;
+    private JTextArea textArea1, textArea2;
     private JScrollPane tableScrollPane;
     private DataManager dataManager;
+    ArchiveCDTable tableModel;
     SaveData fileData;
     Object[][] data;
 
     public MainWindow() {
         setContentPane(contentPane);
         setModal(true);
-
-
-
-
 
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -33,6 +31,10 @@ public class MainWindow extends javax.swing.JDialog {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onPopup();
             }
+        });
+
+        tableModel.getTable().addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) { onTableClick(); }
         });
 
         // call onCancel() when cross is clicked
@@ -62,6 +64,17 @@ public class MainWindow extends javax.swing.JDialog {
         dialog.setVisible(true);
     }
 
+    private void onTableClick() {
+        textField1.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 0).toString());
+        textField2.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 1).toString());
+        textField9.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString());
+
+        textField3.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 3).toString());
+        textField4.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 4).toString());
+        textField5.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString());
+        textArea1.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 6).toString());
+    }
+
     public static void main(String[] args) {
         MainWindow dialog = new MainWindow();
         dialog.pack();
@@ -71,7 +84,6 @@ public class MainWindow extends javax.swing.JDialog {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-
 
         dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt");
         fileData = dataManager.loadFile();
@@ -90,16 +102,13 @@ public class MainWindow extends javax.swing.JDialog {
                             "Snowboarding", 'L', 5, 5, 5, false}
             };
 
-            ArchiveCDTable tableModel = new ArchiveCDTable(sampleData);
-            tableScrollPane = new JScrollPane(tableModel.getTable());
+            tableModel = new ArchiveCDTable(sampleData);
         }
         else
         {
-            ArchiveCDTable tableModel = new ArchiveCDTable(fileData.toObjectArray());
-            tableScrollPane = new JScrollPane(tableModel.getTable());
+            tableModel = new ArchiveCDTable(fileData.toObjectArray());
         }
 
-//        ArchiveCDTable tableModel = new ArchiveCDTable(data);
-//        tableScrollPane = new JScrollPane(tableModel.getTable());
+        tableScrollPane = new JScrollPane(tableModel.getTable());
     }
 }
