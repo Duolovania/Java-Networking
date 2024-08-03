@@ -1,43 +1,57 @@
 public class ArchiveCD
 {
-    private String title, author, description;
-    private char section;
-    private int id, x, y, barcode;
-    private boolean onLoan;
+    private String mTitle,mAuthor, mDescription;
+    private char mSection;
+    private int mID, mX, mY, mBarcode;
+    private boolean mOnLoan;
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getAuthor() {
-        return author;
+        return mAuthor;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public char getSection() {
-        return section;
+        return mSection;
     }
 
     public int getX() {
-        return x;
+        return mX;
     }
 
     public int getID() {
-        return id;
+        return mID;
     }
 
     public int getY() {
-        return y;
+        return mY;
     }
 
-    public int getBarcode() {
-        return barcode;
-    }
+    public int getBarcode() { return mBarcode; }
 
     public boolean getLoan() {
-        return onLoan;
+        return mOnLoan;
+    }
+
+    public ArchiveCD() {
+
+    }
+
+    public ArchiveCD(int id, String title, String author, char section, int x, int y, int barcode, String description, boolean onLoan) {
+        mID = id;
+        mTitle = title;
+        mAuthor = author;
+        mSection = section;
+        mX = x;
+        mY = y;
+        mBarcode = barcode;
+        mDescription = description;
+        mOnLoan = onLoan;
     }
 }

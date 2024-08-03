@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.table.*;
+import javax.xml.crypto.Data;
 
 public class MainWindow extends javax.swing.JDialog {
     private javax.swing.JPanel contentPane;
@@ -10,10 +11,17 @@ public class MainWindow extends javax.swing.JDialog {
     private javax.swing.JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
     private javax.swing.JTextArea textArea1, textArea2;
     private JScrollPane tableScrollPane;
+    private DataManager dataManager;
+    SaveData fileData;
+    Object[][] data;
 
     public MainWindow() {
         setContentPane(contentPane);
         setModal(true);
+
+
+
+
 
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -64,16 +72,34 @@ public class MainWindow extends javax.swing.JDialog {
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        Object[][] data = {
-                {"Kathy", "Smith",
-                        "Snowboarding", 'C', 5, 5, 5, false},
-                {"Kathy", "Smith",
-                        "Snowboarding", 'B', 5, 5, 5, true},
-                {"Kathy", "Smith",
-                        "Snowboarding", 'L', 5, 5, 5, false}
-        };
 
-        ArchiveCDTable tableModel = new ArchiveCDTable(data);
-        tableScrollPane = new JScrollPane(tableModel.getTable());
+        dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt");
+        fileData = dataManager.loadFile();
+
+        // Checks if the loaded data is not valid.
+        if (fileData.dataCollection == null)
+        {
+            JOptionPane.showMessageDialog(this, "Error loading file with name: '" + dataManager.getFileName() + "'. Loading sample data.");
+
+            Object[][] sampleData = {
+                    {"Kathy", "Smith",
+                            "Snowboarding", 'C', 5, 5, 5, false},
+                    {"Kathy", "Smith",
+                            "Snowboarding", 'B', 5, 5, 5, true},
+                    {"Kathy", "Smith",
+                            "Snowboarding", 'L', 5, 5, 5, false}
+            };
+
+            ArchiveCDTable tableModel = new ArchiveCDTable(sampleData);
+            tableScrollPane = new JScrollPane(tableModel.getTable());
+        }
+        else
+        {
+            ArchiveCDTable tableModel = new ArchiveCDTable(fileData.toObjectArray());
+            tableScrollPane = new JScrollPane(tableModel.getTable());
+        }
+
+//        ArchiveCDTable tableModel = new ArchiveCDTable(data);
+//        tableScrollPane = new JScrollPane(tableModel.getTable());
     }
 }
