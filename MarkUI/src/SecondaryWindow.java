@@ -1,16 +1,22 @@
+import javax.swing.*;
 import java.awt.event.ActionListener;
 
-public class SecondaryWindow extends javax.swing.JDialog {
-    private javax.swing.JPanel contentPane;
-    private javax.swing.JButton buttonCancel, button1, processButton, button2;
-    private javax.swing.JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
-    private javax.swing.JTextArea textArea1;
-    private  javax.swing.JTable table1;
-    private javax.swing.JComboBox comboBox1;
+public class SecondaryWindow extends JDialog {
+    private JPanel contentPane;
+    private JButton buttonCancel, button1, processButton, button2;
+    private JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
+    private JTextArea textArea1;
+    private JComboBox comboBox1;
+    private JScrollPane tableScrollPane;
+    private MainWindow mainWindow;
+    private ArchiveCDTable tableModel;
 
-    public SecondaryWindow() {
+    public SecondaryWindow(MainWindow main) {
         setContentPane(contentPane);
         setModal(true);
+        setTitle("Automation Console");
+
+        mainWindow = main;
 
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -39,10 +45,27 @@ public class SecondaryWindow extends javax.swing.JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        SecondaryWindow dialog = new SecondaryWindow();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+
+        // Checks if the loaded data is not valid.
+        if (mainWindow == null)
+        {
+            DataManager dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt");
+            SaveData fileData = dataManager.loadFile();
+
+            JOptionPane.showMessageDialog(this, "Failed to retrieve Archive Console data. Loading data from '" + dataManager.getFileName() + "'.");
+
+            tableModel = new ArchiveCDTable(fileData.toObjectArray(), 7);
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Success!");
+
+            SaveData fileData = mainWindow.fileData;
+            tableModel = new ArchiveCDTable(fileData.toObjectArray(), 7);
+        }
+
+        tableScrollPane = new JScrollPane(tableModel.getTable());
     }
 }

@@ -71,6 +71,7 @@ public class DataManager
     public SaveData loadFile()
     {
         SaveData data = new SaveData(); // Creates a temporary save data object.
+
         data.dataCollection = new ArchiveCD[100]; // Sets the data collection to blank.
         data.count = 0; // Sets the data collection amount to none.
         int lineNum = 0;
@@ -99,16 +100,7 @@ public class DataManager
         {
             System.out.println(ex.getMessage()); // Outputs an error message.
 
-            data.dataCollection = null; // Sets the data collection to null.
-//            data.dataCollection[0] = new ArchiveCD(5, "hi", "hi", 'c', 5,5, 5, "ih", false); // Sets data collection to loaded data.
-
-//            for (int i = 0; i < 3; i++)
-//            {
-//                data.dataCollection[i] = new ArchiveCD(5, "hi", "hi", 'c', 5,5, 5, "ih", false);
-//                System.out.println(data.dataCollection[i].getAuthor());
-//            }
-//
-//            data.count = 3; // Sets the amount of data to zero.
+            data.dataCollection = null;
             data.count = 0;
         }
         return data; // Returns the loaded data.

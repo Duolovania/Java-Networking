@@ -3,6 +3,7 @@ public class SaveData
     public ArchiveCD[] dataCollection;
     public int count;
 
+    // Converts the ArchiveCD data collection to a 2-Dimensional Object Array.
     public Object[][] toObjectArray() {
         int columns = 9;
         int rows = count;

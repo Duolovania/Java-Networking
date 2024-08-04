@@ -67,7 +67,7 @@
                   <text value="Sort:"/>
                 </properties>
               </component>
-              <component id="96516" class="javax.swing.JButton" binding="button17" default-binding="true">
+              <component id="96516" class="javax.swing.JButton" binding="sortTitleButton">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -75,7 +75,7 @@
                   <text value="By Title"/>
                 </properties>
               </component>
-              <component id="1b59e" class="javax.swing.JButton" binding="button18" default-binding="true">
+              <component id="1b59e" class="javax.swing.JButton" binding="sortAuthorButton">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -83,7 +83,7 @@
                   <text value="By Author"/>
                 </properties>
               </component>
-              <component id="48a2e" class="javax.swing.JButton" binding="button19" default-binding="true">
+              <component id="48a2e" class="javax.swing.JButton" binding="sortBarcodeButton">
                 <constraints>
                   <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -130,7 +130,7 @@
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
-              <component id="5ebdd" class="javax.swing.JButton" binding="button3" default-binding="true">
+              <component id="5ebdd" class="javax.swing.JButton" binding="retrieveButton">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -138,7 +138,7 @@
                   <text value="Retrieve"/>
                 </properties>
               </component>
-              <component id="7a8b" class="javax.swing.JButton" binding="button4" default-binding="true">
+              <component id="7a8b" class="javax.swing.JButton" binding="returnButton">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -146,7 +146,7 @@
                   <text value="Return"/>
                 </properties>
               </component>
-              <component id="d5891" class="javax.swing.JButton" binding="button5" default-binding="true">
+              <component id="d5891" class="javax.swing.JButton" binding="collectionButton">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -154,7 +154,7 @@
                   <text value="Add to Collection"/>
                 </properties>
               </component>
-              <component id="72fab" class="javax.swing.JButton" binding="button6" default-binding="true">
+              <component id="72fab" class="javax.swing.JButton" binding="removeButton">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -170,7 +170,7 @@
                   <text value="Sort Selection:"/>
                 </properties>
               </component>
-              <component id="51659" class="javax.swing.JTextField" binding="textField6" default-binding="true">
+              <component id="51659" class="javax.swing.JTextField" binding="sortTextField">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -178,7 +178,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="2da34" class="javax.swing.JButton" binding="button7" default-binding="true">
+              <component id="2da34" class="javax.swing.JButton" binding="sortRandomButton">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -186,7 +186,7 @@
                   <text value="Random Collection Sort"/>
                 </properties>
               </component>
-              <component id="ad370" class="javax.swing.JButton" binding="button8" default-binding="true">
+              <component id="ad370" class="javax.swing.JButton" binding="mostlySortButton">
                 <constraints>
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -194,7 +194,7 @@
                   <text value="Mostly Sorted Sort"/>
                 </properties>
               </component>
-              <component id="5c107" class="javax.swing.JButton" binding="button9" default-binding="true">
+              <component id="5c107" class="javax.swing.JButton" binding="reverseSortButton">
                 <constraints>
                   <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -222,7 +222,7 @@
                   <text value="Title:"/>
                 </properties>
               </component>
-              <component id="5e7e5" class="javax.swing.JTextField" binding="textField1">
+              <component id="5e7e5" class="javax.swing.JTextField" binding="titleTextField">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -240,7 +240,7 @@
                   <text value="Author:"/>
                 </properties>
               </component>
-              <component id="c3f60" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+              <component id="c3f60" class="javax.swing.JTextField" binding="authorTextField">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -256,7 +256,7 @@
                   <text value="X:"/>
                 </properties>
               </component>
-              <component id="e9ebe" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+              <component id="e9ebe" class="javax.swing.JTextField" binding="xTextField">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -272,7 +272,7 @@
                   <text value="Y:"/>
                 </properties>
               </component>
-              <component id="f1790" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+              <component id="f1790" class="javax.swing.JTextField" binding="yTextField">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -288,7 +288,7 @@
                   <text value="BarCode:"/>
                 </properties>
               </component>
-              <component id="ec3dc" class="javax.swing.JTextField" binding="textField5" default-binding="true">
+              <component id="ec3dc" class="javax.swing.JTextField" binding="barcodeTextField">
                 <constraints>
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -304,7 +304,7 @@
                   <text value="Description:"/>
                 </properties>
               </component>
-              <component id="ebb" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+              <component id="ebb" class="javax.swing.JTextArea" binding="descriptionTextArea">
                 <constraints>
                   <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -312,7 +312,7 @@
                   <lineWrap value="true"/>
                 </properties>
               </component>
-              <component id="ab73" class="javax.swing.JButton" binding="button1" default-binding="true">
+              <component id="ab73" class="javax.swing.JButton" binding="newItemButton">
                 <constraints>
                   <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -320,7 +320,7 @@
                   <text value="New Item"/>
                 </properties>
               </component>
-              <component id="98545" class="javax.swing.JButton" binding="button2" default-binding="true">
+              <component id="98545" class="javax.swing.JButton" binding="updateButton">
                 <constraints>
                   <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -336,7 +336,7 @@
                   <text value="Section:"/>
                 </properties>
               </component>
-              <component id="c8656" class="javax.swing.JTextField" binding="textField9" default-binding="true">
+              <component id="c8656" class="javax.swing.JTextField" binding="sectionTextField">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -362,7 +362,7 @@
                   <text value="Process Log:"/>
                 </properties>
               </component>
-              <component id="dba7e" class="javax.swing.JTextArea" binding="textArea2" default-binding="true">
+              <component id="dba7e" class="javax.swing.JTextArea" binding="processTextArea">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="6" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="50"/>
@@ -388,7 +388,7 @@
                   <text value="HashMap/Set:"/>
                 </properties>
               </component>
-              <component id="7657c" class="javax.swing.JButton" binding="button11" default-binding="true">
+              <component id="7657c" class="javax.swing.JButton" binding="preOrderButton">
                 <constraints>
                   <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -396,7 +396,7 @@
                   <text value="Pre-Order"/>
                 </properties>
               </component>
-              <component id="a3fb" class="javax.swing.JButton" binding="button12" default-binding="true">
+              <component id="a3fb" class="javax.swing.JButton" binding="inOrderButton">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -404,7 +404,7 @@
                   <text value="In-Order"/>
                 </properties>
               </component>
-              <component id="13837" class="javax.swing.JButton" binding="button13" default-binding="true">
+              <component id="13837" class="javax.swing.JButton" binding="hashSaveButton">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -412,7 +412,7 @@
                   <text value="Save"/>
                 </properties>
               </component>
-              <component id="a5150" class="javax.swing.JButton" binding="button14" default-binding="true">
+              <component id="a5150" class="javax.swing.JButton" binding="hashDisplayButton">
                 <constraints>
                   <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -420,7 +420,7 @@
                   <text value="Display"/>
                 </properties>
               </component>
-              <component id="3a9ad" class="javax.swing.JButton" binding="button15" default-binding="true">
+              <component id="3a9ad" class="javax.swing.JButton" binding="postOrderButton">
                 <constraints>
                   <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -428,7 +428,7 @@
                   <text value="Post-Order"/>
                 </properties>
               </component>
-              <component id="9ef04" class="javax.swing.JButton" binding="button16" default-binding="true">
+              <component id="9ef04" class="javax.swing.JButton" binding="graphicalButton">
                 <constraints>
                   <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -444,7 +444,7 @@
                   <text value="Find Bar Code:"/>
                 </properties>
               </component>
-              <component id="16f94" class="javax.swing.JTextField" binding="textField7" default-binding="true">
+              <component id="16f94" class="javax.swing.JTextField" binding="findBarcodeTextField">
                 <constraints>
                   <grid row="3" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="-1"/>
@@ -452,7 +452,7 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="bcc30" class="javax.swing.JButton" binding="button10" default-binding="true">
+              <component id="bcc30" class="javax.swing.JButton" binding="processButton">
                 <constraints>
                   <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -470,7 +470,7 @@
               <text value="Search String:"/>
             </properties>
           </component>
-          <component id="ab23" class="javax.swing.JTextField" binding="textField8" default-binding="true">
+          <component id="ab23" class="javax.swing.JTextField" binding="searchTextField">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -478,7 +478,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="92570" class="javax.swing.JButton" binding="button20" default-binding="true">
+          <component id="92570" class="javax.swing.JButton" binding="searchButton">
             <constraints>
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
