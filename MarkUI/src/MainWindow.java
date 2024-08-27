@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
 
 public class MainWindow extends javax.swing.JDialog {
@@ -16,6 +18,12 @@ public class MainWindow extends javax.swing.JDialog {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Archive Console");
+
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onSearch();
+            }
+        });
 
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -78,6 +86,13 @@ public class MainWindow extends javax.swing.JDialog {
         }, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    private void onSearch() {
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tableModel.model);
+        sorter.setRowFilter(RowFilter.regexFilter(searchTextField.getText()));
+
+        tableModel.getTable().setRowSorter(sorter);
+    }
+
     private void onCancel() {
         // add your code here if necessary
         dispose();
@@ -116,6 +131,21 @@ public class MainWindow extends javax.swing.JDialog {
     private void onUpdate() {
         // TODO: Add constraints for fields.
 
+        if (xTextField.getText().matches(".*[a-z].*"))
+        {
+            JOptionPane.showMessageDialog(this, "x-value cannot contain characters other than numerical values");
+            return;
+        }
+        else if (yTextField.getText().matches(".*[a-z].*"))
+        {
+            JOptionPane.showMessageDialog(this, "y-value cannot contain characters other than numerical values");
+            return;
+        }
+        else if (barcodeTextField.getText().matches(".*[a-z].*"))
+        {
+            JOptionPane.showMessageDialog(this, "Barcode cannot contain characters other than numerical values");
+            return;
+        }
 
         // Checks if an item in the table is selected.
         if (!tableModel.getTable().getSelectionModel().isSelectionEmpty())
