@@ -148,15 +148,15 @@ public class MainWindow extends javax.swing.JDialog {
     }
 
     private void onSortTitle() {
-        tableModel.updateTable(tableModel.sortByTitle(fileData.dataCollection));
+        tableModel.updateTable(tableModel.shellSortByTitle(fileData.dataCollection));
     }
 
     private void onSortAuthor() {
-        tableModel.updateTable(tableModel.sortByAuthor(fileData.dataCollection));
+        tableModel.updateTable(tableModel.shellSortByAuthor(fileData.dataCollection));
     }
 
     private void onSortBarcode() {
-        tableModel.updateTable(tableModel.sortByBarcode(fileData.dataCollection));
+        tableModel.updateTable(tableModel.shellSortByBarcode(fileData.dataCollection));
     }
 
     public static void main(String[] args) {

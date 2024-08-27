@@ -74,6 +74,38 @@ public class ArchiveCDTable {
     }
 
     /**
+     * This method sorts an ArchiveCD array by its title using the shell sort algorithm.
+     * @param originalArray the ArchiveCD array that is being sorted.
+     *
+     * @return a 2-Dimensional Object Array that can be used by Java UI elements.
+     */
+    public Object[][] shellSortByTitle(ArchiveCD[] originalArray) {
+        int arrayLength = 0;
+        for (int i = 0; i < originalArray.length; i++) if (originalArray[i] != null) arrayLength++; // Counts how many valid items are in the array.
+
+        String[] tempArr = new String[arrayLength]; // Creates an array to store CD titles.
+        ArchiveCD[] sortedArray = new ArchiveCD[originalArray.length]; // Sets the sorted array
+
+        // Retrieves each title from the collection.
+        for (int i = 0; i < tempArr.length; i++)
+        {
+            tempArr[i] = originalArray[i].getTitle();
+        }
+
+        new ShellSort<>(tempArr).sort(); //  Runs the shell sort algorithm on the temp array.
+
+        // Cycles through each title.
+        for (int i = 0; i < tempArr.length; i++)
+        {
+            String tempTitle  = tempArr[i]; // Temporary title to be used in lambda function.
+            Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getTitle().equals(tempTitle)).findFirst(); // Finds a CD with a title that matches the sorted title.
+            if (result.isPresent()) sortedArray[i] = result.get(); // Sets the current CD to the correct CD in the sorted list of titles.
+        }
+
+        return toObjectArray(sortedArray); // Returns an object array
+    }
+
+    /**
      * This method sorts an ArchiveCD array by its title.
      * @param originalArray the ArchiveCD array that is being sorted.
      *
@@ -101,6 +133,39 @@ public class ArchiveCDTable {
             String tempTitle  = tempArr[i]; // Temporary title to be used in lambda function.
             Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getTitle().equals(tempTitle)).findFirst(); // Finds a CD with a title that matches the sorted title.
             if (result.isPresent()) sortedArray[i] = result.get(); // Sets the current CD to the correct CD in the sorted list of titles.
+        }
+
+        return toObjectArray(sortedArray); // Returns an object array
+    }
+
+    /**
+     * This method sorts an ArchiveCD array by its author name using the shell sort algorithm.
+     * @param originalArray the ArchiveCD array that is being sorted.
+     *
+     * @return a 2-Dimensional Object Array that can be used by Java UI elements.
+     */
+    public Object[][] shellSortByAuthor(ArchiveCD[] originalArray) {
+
+        int arrayLength = 0;
+        for (int i = 0; i < originalArray.length; i++) if (originalArray[i] != null) arrayLength++; // Counts how many valid items are in the array.
+
+        String[] tempArr = new String[arrayLength]; // Creates an array to store CD authors.
+        ArchiveCD[] sortedArray = new ArchiveCD[originalArray.length]; // Sets the sorted array
+
+        // Retrieves each author from the collection.
+        for (int i = 0; i < tempArr.length; i++)
+        {
+            tempArr[i] = originalArray[i].getAuthor();
+        }
+
+        new ShellSort<>(tempArr).sort(); //  Runs the shell sort algorithm on the temp array.
+
+        // Cycles through each title.
+        for (int i = 0; i < tempArr.length; i++)
+        {
+            String tempAuthor  = tempArr[i]; // Temporary author to be used in lambda function.
+            Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getAuthor().equals(tempAuthor)).findFirst(); // Finds a CD with an author that matches the sorted authors.
+            if (result.isPresent()) sortedArray[i] = result.get(); // Sets the current CD to the correct CD in the sorted list of authors.
         }
 
         return toObjectArray(sortedArray); // Returns an object array
@@ -140,6 +205,39 @@ public class ArchiveCDTable {
     }
 
     /**
+     * This method sorts an ArchiveCD array by its barcode number using the shell sort algorithm.
+     * @param originalArray the ArchiveCD array that is being sorted.
+     *
+     * @return a 2-Dimensional Object Array that can be used by Java UI elements.
+     */
+    public Object[][] shellSortByBarcode(ArchiveCD[] originalArray) {
+
+        int arrayLength = 0;
+        for (int i = 0; i < originalArray.length; i++) if (originalArray[i] != null) arrayLength++; // Counts how many valid items are in the array.
+
+        Integer[] tempArr = new Integer[arrayLength]; // Creates an array to store CD barcodes.
+        ArchiveCD[] sortedArray = new ArchiveCD[originalArray.length]; // Sets the sorted array
+
+        // Retrieves each barcode from the collection.
+        for (int i = 0; i < tempArr.length; i++)
+        {
+            tempArr[i] = originalArray[i].getBarcode();
+        }
+
+        new ShellSort<>(tempArr).sort(); //  Runs the shell sort algorithm on the temp array.
+
+        // Cycles through each title.
+        for (int i = 0; i < tempArr.length; i++)
+        {
+            int tempAuthor  = tempArr[i]; // Temporary barcode to be used in lambda function.
+            Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getBarcode() == tempAuthor).findFirst(); // Finds a CD with a barcode that matches the sorted barcode.
+            if (result.isPresent()) sortedArray[i] = result.get(); // Sets the current CD to the correct CD in the sorted list of barcodes.
+        }
+
+        return toObjectArray(sortedArray); // Returns an object array
+    }
+
+    /**
      * This method sorts an ArchiveCD array by its barcode number.
      * @param originalArray the ArchiveCD array that is being sorted.
      *
@@ -150,10 +248,10 @@ public class ArchiveCDTable {
         int arrayLength = 0;
         for (int i = 0; i < originalArray.length; i++) if (originalArray[i] != null) arrayLength++; // Counts how many valid items are in the array.
 
-        int[] tempArr = new int[arrayLength]; // Creates an array to store CD authors.
+        int[] tempArr = new int[arrayLength]; // Creates an array to store CD barcodes.
         ArchiveCD[] sortedArray = new ArchiveCD[originalArray.length]; // Sets the sorted array
 
-        // Retrieves each author from the collection.
+        // Retrieves each barcode from the collection.
         for (int i = 0; i < tempArr.length; i++)
         {
             tempArr[i] = originalArray[i].getBarcode();
@@ -164,9 +262,9 @@ public class ArchiveCDTable {
         // Cycles through each title.
         for (int i = 0; i < tempArr.length; i++)
         {
-            int tempAuthor  = tempArr[i]; // Temporary author to be used in lambda function.
-            Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getBarcode() == tempAuthor).findFirst(); // Finds a CD with an author that matches the sorted authors.
-            if (result.isPresent()) sortedArray[i] = result.get(); // Sets the current CD to the correct CD in the sorted list of authors.
+            int tempAuthor  = tempArr[i]; // Temporary barcode to be used in lambda function.
+            Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getBarcode() == tempAuthor).findFirst(); // Finds a CD with a barcode that matches the sorted authors.
+            if (result.isPresent()) sortedArray[i] = result.get(); // Sets the current CD to the correct CD in the sorted list of barcodes.
         }
 
         return toObjectArray(sortedArray); // Returns an object array
