@@ -1,3 +1,12 @@
+/**
+ * ArchiveCD.java
+ *
+ * The archive CD class for the application.
+ * This class stores data for a specific entry in the application.
+ *
+ * Version 1.00.
+ * Author: Ryhan Khan.
+ */
 public class ArchiveCD
 {
     private String mTitle,mAuthor, mDescription;
@@ -39,10 +48,19 @@ public class ArchiveCD
         return mOnLoan;
     }
 
-    public ArchiveCD() {
-
-    }
-
+    /**
+     * This constructor takes in all the details required for an entry.
+     *
+     * @param id The number used as a unique identifier for the entry.
+     * @param title The label for the CD.
+     * @param author The credit/creator of the CD.
+     * @param section The section for the CD.
+     * @param x The x position for the CD.
+     * @param y The y position for the CD.
+     * @param barcode The barcode number for the CD.
+     * @param description The description for the CD.
+     * @param onLoan The status of whether the CD is on loan.
+     */
     public ArchiveCD(int id, String title, String author, char section, int x, int y, int barcode, String description, boolean onLoan) {
         mID = id;
         mTitle = title;

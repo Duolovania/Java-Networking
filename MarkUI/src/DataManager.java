@@ -1,5 +1,3 @@
-import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;

@@ -3,12 +3,27 @@ import javax.swing.table.*;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * ArchiveCDTable.java
+ *
+ * The archive CD table class for the application.
+ * This class handles the structure/layout of the data table, as well as the sorting functionality that is used in the program.
+ *
+ * Version 1.00.
+ * Author: Ryhan Khan.
+ */
 public class ArchiveCDTable {
     private JTable m_Table;
     private Object[][] tableData;
     private String[] columnNames;
     DefaultTableModel model;
 
+    /**
+     * This constructor is used to generate the JTable and define the column header names.
+     *
+     * @param data The data that is loaded into each table row.
+     * @param columns The number of columns that will be displayed on the table. Default = -1.
+     */
     public ArchiveCDTable(Object[][] data, int columns) {
         String[] tempColumns = {
                 "Title",
@@ -75,6 +90,8 @@ public class ArchiveCDTable {
 
     /**
      * This method sorts an ArchiveCD array by its title using the shell sort algorithm.
+     * Note: This used for reading purposes and does not affect the order of the original data collection.
+     *
      * @param originalArray the ArchiveCD array that is being sorted.
      *
      * @return a 2-Dimensional Object Array that can be used by Java UI elements.
@@ -107,6 +124,8 @@ public class ArchiveCDTable {
 
     /**
      * This method sorts an ArchiveCD array by its title.
+     * Note: This used for reading purposes and does not affect the order of the original data collection.
+     *
      * @param originalArray the ArchiveCD array that is being sorted.
      *
      * @return a 2-Dimensional Object Array that can be used by Java UI elements.
@@ -140,6 +159,8 @@ public class ArchiveCDTable {
 
     /**
      * This method sorts an ArchiveCD array by its author name using the shell sort algorithm.
+     * Note: This used for reading purposes and does not affect the order of the original data collection.
+     *
      * @param originalArray the ArchiveCD array that is being sorted.
      *
      * @return a 2-Dimensional Object Array that can be used by Java UI elements.
@@ -173,6 +194,8 @@ public class ArchiveCDTable {
 
     /**
      * This method sorts an ArchiveCD array by its author name.
+     * Note: This used for reading purposes and does not affect the order of the original data collection.
+     *
      * @param originalArray the ArchiveCD array that is being sorted.
      *
      * @return a 2-Dimensional Object Array that can be used by Java UI elements.
@@ -206,6 +229,8 @@ public class ArchiveCDTable {
 
     /**
      * This method sorts an ArchiveCD array by its barcode number using the shell sort algorithm.
+     * Note: This used for reading purposes and does not affect the order of the original data collection.
+     *
      * @param originalArray the ArchiveCD array that is being sorted.
      *
      * @return a 2-Dimensional Object Array that can be used by Java UI elements.
@@ -239,6 +264,8 @@ public class ArchiveCDTable {
 
     /**
      * This method sorts an ArchiveCD array by its barcode number.
+     * Note: This used for reading purposes and does not affect the order of the original data collection.
+     *
      * @param originalArray the ArchiveCD array that is being sorted.
      *
      * @return a 2-Dimensional Object Array that can be used by Java UI elements.
@@ -270,27 +297,32 @@ public class ArchiveCDTable {
         return toObjectArray(sortedArray); // Returns an object array
     }
 
-    // Converts an ArchiveCD array to a 2-Dimensional Object Array.
+    /**
+     * Converts an ArchiveCD array to a 2-Dimensional Object Array.
+     *
+     * @param dataCollection The array that is being converted.
+     * @return An array converted to a suitable format that can be used in the application.
+     */
     private Object[][] toObjectArray(ArchiveCD[] dataCollection) {
-        int arrayLength = 0;
-        for (int i = 0; i < dataCollection.length; i++) if (dataCollection[i] != null) arrayLength++; // Counts how many valid items are in the array.
+        int arrayLength = 0; // Sets the number of rows to 0 by default.
+        for (int i = 0; i < dataCollection.length; i++) if (dataCollection[i] != null) arrayLength++; // Counts how many valid items are in the array. 'Valid items' are items that are not null.
 
-        int columns = 9;
-        int rows = arrayLength;
+        int columns = 9; // Sets the number of columns.
+        int rows = arrayLength; // Sets the number of rows to the number of valid items in the collection. This is so that the table does not show blank entries.
 
-        Object[][] data = new Object[rows][columns];
+        Object[][] data = new Object[rows][columns]; // Creates a blank 2D object array with the correct size.
 
         for (int i = 0; i < rows; i++) {
-            data[i][0] = dataCollection[i].getTitle();
-            data[i][1] = dataCollection[i].getAuthor();
-            data[i][2] = dataCollection[i].getSection();
-            data[i][3] = dataCollection[i].getX();
-            data[i][4] = dataCollection[i].getY();
-            data[i][5] = dataCollection[i].getBarcode();
-            data[i][6] = dataCollection[i].getDescription();
-            data[i][7] = dataCollection[i].getLoan();
+            data[i][0] = dataCollection[i].getTitle(); // Sets the 'title' column.
+            data[i][1] = dataCollection[i].getAuthor(); // Sets the 'author' column.
+            data[i][2] = dataCollection[i].getSection(); // Sets the 'section' column.
+            data[i][3] = dataCollection[i].getX(); // Sets the 'x' column.
+            data[i][4] = dataCollection[i].getY(); // Sets the 'y' column.
+            data[i][5] = dataCollection[i].getBarcode(); // Sets the 'barcode' column.
+            data[i][6] = dataCollection[i].getDescription(); // Sets the 'description' column.
+            data[i][7] = dataCollection[i].getLoan(); // Sets the 'loan' column.
         }
 
-        return data;
+        return data; // Returns the newly generated object array.
     }
 }
