@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SecondaryWindow extends JDialog {
     private JPanel contentPane;
@@ -24,6 +26,11 @@ public class SecondaryWindow extends JDialog {
             }
         });
 
+        // Binds the table clicking functionality to the table model.
+        tableModel.getTable().addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) { onTableClick(); }
+        });
+
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -43,6 +50,11 @@ public class SecondaryWindow extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    private void onTableClick() {
+        textField2.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()); // Sets the 'section' text field to the table column.
+        textField1.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString()); // Sets the 'barcode' text field to the table column.
     }
 
     private void createUIComponents() {
