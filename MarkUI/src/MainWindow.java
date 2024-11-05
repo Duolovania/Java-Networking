@@ -156,10 +156,12 @@ public class MainWindow extends javax.swing.JDialog {
         }, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void updateProcessLog(String newText) {
-        processTextArea = new JTextArea();
-        processTextArea.setEditable(false);
-        processTextArea.setText(newText);
+    private void updateProcessLog() {
+        DLList tempList = new DLList();
+        tempList.convertBinaryTree((binaryTree.root));
+
+        String newString = tempList.displaySingle();
+//        processTextArea.setText(newString);
     }
 
     /**
@@ -292,7 +294,9 @@ public class MainWindow extends javax.swing.JDialog {
     private void onSortTitle() {
         tableModel.updateTable(tableModel.shellSortByTitle(fileData.dataCollection)); // Refreshes the table to display the sorted data.
 
-        for (int i = 0; i < fileData.dataCollection.length; i++)
+        binaryTree = new BinaryTree();
+
+        for (int i = 0; i < fileData.count; i++)
         {
             String nodeValue = fileData.dataCollection[i].getBarcode() + " " + fileData.dataCollection[i].getTitle();
             binaryTree.addNode(i, nodeValue);
@@ -316,21 +320,21 @@ public class MainWindow extends javax.swing.JDialog {
     }
 
     private void onInOrder() {
-        binaryTree.inOrderTraverseTree(binaryTree.root);
-
-        DLList tempList = new DLList();
-        tempList.convertBinaryTree((binaryTree.root));
-
-        String newString = tempList.displaySingle();
-        updateProcessLog(newString);
+        processTextArea.setText("");
+        binaryTree.inOrderTraverseTree(binaryTree.root, processTextArea);
+        updateProcessLog();
     }
 
     private void onPreOrder() {
-        binaryTree.preorderTraverseTree(binaryTree.root);
+        processTextArea.setText("");
+        binaryTree.preorderTraverseTree(binaryTree.root, processTextArea);
+        updateProcessLog();
     }
 
     private void onPostOrder() {
-        binaryTree.postOrderTraverseTree(binaryTree.root);
+        processTextArea.setText("");
+        binaryTree.postOrderTraverseTree(binaryTree.root, processTextArea);
+        updateProcessLog();
     }
 
     private void onHashSave() {
@@ -383,6 +387,9 @@ public class MainWindow extends javax.swing.JDialog {
         }
 
         tableScrollPane = new JScrollPane(tableModel.getTable()); // Binds the table to a scroll pane.
+
+        processTextArea = new JTextArea();
+        processTextArea.setEditable(false);
     }
 
     public void close()

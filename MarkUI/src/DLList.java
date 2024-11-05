@@ -15,7 +15,8 @@ public class DLList {
         // Link the current node
         if (prev == null) {
             head = root; // Set head if it's the first node
-        } else {
+        }
+        else {
             prev.rightChild = root;
             root.leftChild = prev;
         }

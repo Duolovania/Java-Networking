@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class BinaryTree
         genHashMap(focusNode.leftChild);
         genHashMap(focusNode.rightChild);
     }
+
 
     public void addNode(int key, String name) {
 
@@ -81,37 +83,32 @@ public class BinaryTree
     // All nodes are visited in ascending order
     // Recursion is used to go to one node and
     // then go to its child nodes and so forth
-    public void inOrderTraverseTree(Node focusNode) {
+    public void inOrderTraverseTree(Node focusNode, JTextArea output) {
 
         if (focusNode != null) {
 
             // Traverse the left node
-            inOrderTraverseTree(focusNode.leftChild);
-
-            // Visit the currently focused on node
-            System.out.println(focusNode);
-
+            inOrderTraverseTree(focusNode.leftChild, output);
+            output.append(focusNode.name + "\n");
             // Traverse the right node
-            inOrderTraverseTree(focusNode.rightChild);
+            inOrderTraverseTree(focusNode.rightChild, output);
         }
 
     }
 
-    public void preorderTraverseTree(Node focusNode) {
+    public void preorderTraverseTree(Node focusNode, JTextArea output) {
         if (focusNode != null) {
-            System.out.println(focusNode);
-
-            preorderTraverseTree(focusNode.leftChild);
-            preorderTraverseTree(focusNode.rightChild);
+            output.append(focusNode.name + "\n");
+            preorderTraverseTree(focusNode.leftChild, output);
+            preorderTraverseTree(focusNode.rightChild, output);
         }
     }
 
-    public void postOrderTraverseTree(Node focusNode) {
+    public void postOrderTraverseTree(Node focusNode, JTextArea output) {
         if (focusNode != null) {
-            postOrderTraverseTree(focusNode.leftChild);
-            postOrderTraverseTree(focusNode.rightChild);
-
-            System.out.println(focusNode);
+            postOrderTraverseTree(focusNode.leftChild, output);
+            postOrderTraverseTree(focusNode.rightChild, output);
+            output.append(focusNode.name + "\n");
         }
     }
 
