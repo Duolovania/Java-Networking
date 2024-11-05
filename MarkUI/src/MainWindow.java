@@ -23,7 +23,7 @@ public class MainWindow extends javax.swing.JDialog {
     private Socket socket = null;
     private DataInputStream console = null;
     private DataOutputStream streamOut = null;
-    private ChatClientThread1 client = null;
+//    private ChatClientThread1 client = null;
     private String serverName = "localhost";
     private int serverPort = 4444;
 
@@ -37,10 +37,14 @@ public class MainWindow extends javax.swing.JDialog {
     private ArchiveCDTable tableModel;
     public SaveData fileData;
 
+    private BinaryTree binaryTree;
+
     public MainWindow() {
         setContentPane(contentPane);
         setModal(true);
         setTitle("Archive Console"); // Sets the label of the window.
+
+        binaryTree = new BinaryTree();
 
         // Binds the search functionality to the search button.
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -56,10 +60,45 @@ public class MainWindow extends javax.swing.JDialog {
             }
         });
 
+        // Binds the binary tree pre-order functionality to the pre-order button.
+        preOrderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onPreOrder();
+            }
+        });
+
+        // Binds the binary tree in-order functionality to the in-order button.
+        inOrderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onInOrder();
+            }
+        });
+
+        // Binds the binary tree post-order functionality to the post-order button.
+        postOrderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onPostOrder();
+            }
+        });
+
         // Binds the graphics functionality to the graphical button.
         graphicalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onPopup();
+            }
+        });
+
+        // Binds the hashmap saving functionality to the save button.
+        hashSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onHashSave();
+            }
+        });
+
+        // Binds the hashmap displaying functionality to the display button.
+        hashDisplayButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onHashDisplay();
             }
         });
 
@@ -115,6 +154,12 @@ public class MainWindow extends javax.swing.JDialog {
                 onCancel();
             }
         }, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void updateProcessLog(String newText) {
+        processTextArea = new JTextArea();
+        processTextArea.setEditable(false);
+        processTextArea.setText(newText);
     }
 
     /**
@@ -246,6 +291,12 @@ public class MainWindow extends javax.swing.JDialog {
      */
     private void onSortTitle() {
         tableModel.updateTable(tableModel.shellSortByTitle(fileData.dataCollection)); // Refreshes the table to display the sorted data.
+
+        for (int i = 0; i < fileData.dataCollection.length; i++)
+        {
+            String nodeValue = fileData.dataCollection[i].getBarcode() + " " + fileData.dataCollection[i].getTitle();
+            binaryTree.addNode(i, nodeValue);
+        }
     }
 
     /**
@@ -262,6 +313,32 @@ public class MainWindow extends javax.swing.JDialog {
      */
     private void onSortBarcode() {
         tableModel.updateTable(tableModel.shellSortByBarcode(fileData.dataCollection)); // Refreshes the table to display the sorted data.
+    }
+
+    private void onInOrder() {
+        binaryTree.inOrderTraverseTree(binaryTree.root);
+
+        DLList tempList = new DLList();
+        tempList.convertBinaryTree((binaryTree.root));
+
+        String newString = tempList.displaySingle();
+        updateProcessLog(newString);
+    }
+
+    private void onPreOrder() {
+        binaryTree.preorderTraverseTree(binaryTree.root);
+    }
+
+    private void onPostOrder() {
+        binaryTree.postOrderTraverseTree(binaryTree.root);
+    }
+
+    private void onHashSave() {
+        binaryTree.genHashMap(binaryTree.root);
+    }
+
+    private void onHashDisplay() {
+
     }
 
     /**
@@ -325,21 +402,21 @@ public class MainWindow extends javax.swing.JDialog {
         {
             System.out.println("Error closing ...");
         }
-        client.close();
-        client.stop();
+//        client.close();
+//        client.stop();
     }
 
     private void send() {
-        try
-        {
-            streamOut.writeUTF(txtWord1.getText());
-            streamOut.flush();
-            txtWord1.setText("");
-        }
-        catch (IOException ioe)
-        {
-            System.out.println("Sending error: " + ioe.getMessage());
-            close();
-        }
+//        try
+//        {
+//            streamOut.writeUTF(txtWord1.getText());
+//            streamOut.flush();
+//            txtWord1.setText("");
+//        }
+//        catch (IOException ioe)
+//        {
+//            System.out.println("Sending error: " + ioe.getMessage());
+//            close();
+//        }
     }
 }
