@@ -2,6 +2,12 @@ import javax.swing.*;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
+import java.io.IOException;
+
+//CHAT RELATED ---------------------------
+import java.net.*;
+import java.io.*;
+//----------------------------------------
 
 /**
  * MainWindow.java
@@ -13,6 +19,14 @@ import java.awt.event.*;
  * Author: Ryhan Khan.
  */
 public class MainWindow extends javax.swing.JDialog {
+
+    private Socket socket = null;
+    private DataInputStream console = null;
+    private DataOutputStream streamOut = null;
+    private ChatClientThread1 client = null;
+    private String serverName = "localhost";
+    private int serverPort = 4444;
+
     private JPanel contentPane;
     private JButton buttonCancel, newItemButton, updateButton, retrieveButton, returnButton, collectionButton, removeButton,
             sortRandomButton, mostlySortButton, reverseSortButton, processButton, preOrderButton, inOrderButton, hashSaveButton, hashDisplayButton, postOrderButton, graphicalButton, sortTitleButton, sortAuthorButton, sortBarcodeButton, searchButton;
@@ -292,5 +306,40 @@ public class MainWindow extends javax.swing.JDialog {
         }
 
         tableScrollPane = new JScrollPane(tableModel.getTable()); // Binds the table to a scroll pane.
+    }
+
+    public void close()
+    {
+        try
+        {
+            if (streamOut != null)
+            {
+                streamOut.close();
+            }
+            if (socket != null)
+            {
+                socket.close();
+            }
+        }
+        catch (IOException ioe)
+        {
+            System.out.println("Error closing ...");
+        }
+        client.close();
+        client.stop();
+    }
+
+    private void send() {
+        try
+        {
+            streamOut.writeUTF(txtWord1.getText());
+            streamOut.flush();
+            txtWord1.setText("");
+        }
+        catch (IOException ioe)
+        {
+            System.out.println("Sending error: " + ioe.getMessage());
+            close();
+        }
     }
 }
