@@ -88,8 +88,8 @@ public class ChatServer implements Runnable
         {
             for (int i = 0; i < clientCount; i++)
             {
-                //if(clients[i].getID() != ID)
-                clients[i].send(ID + ": " + input);
+                if(clients[i].getID() != ID) clients[i].send(ID + ": " + input);
+
             }
         }
     }

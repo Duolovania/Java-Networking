@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,7 +21,7 @@ public class SecondaryWindow extends JDialog {
     private JButton buttonCancel, button1, processButton;
     private JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
     private JTextArea textArea1;
-    private JComboBox comboBox1;
+    private JComboBox actionsDropdown;
     private JScrollPane tableScrollPane;
     private JLabel serverStatusText;
     private ArchiveCDTable tableModel;
@@ -89,6 +90,18 @@ public class SecondaryWindow extends JDialog {
         tableModel = new ArchiveCDTable(fileData.toObjectArray(), 7);
 
         tableScrollPane = new JScrollPane(tableModel.getTable());
+
+        String[] dropDownItems = {"Add", "Remove", "Retrieve", "Return", "Sort"};
+        DefaultComboBoxModel dModel = new DefaultComboBoxModel(dropDownItems);
+
+        actionsDropdown = new JComboBox(dModel);
+        actionsDropdown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String value = actionsDropdown.getSelectedItem().toString();
+                System.out.println(value);
+            }
+        });
     }
 
     public void connect(String serverName, int serverPort)
@@ -149,6 +162,7 @@ public class SecondaryWindow extends JDialog {
         {
             streamOut.writeUTF("Hello");
             streamOut.flush();
+            serverStatusText.setText("sent.");
 //            processTextArea.setText(""); // Reset vlaues or something
         }
         catch (IOException ioe)
@@ -167,8 +181,6 @@ public class SecondaryWindow extends JDialog {
         }
         else
         {
-            System.out.println(msg);
-
             // NEW -----------------------------------
 //            currentAssocWord++;
 //            wordList[currentAssocWord] = new AssocData(msg);
@@ -177,6 +189,7 @@ public class SecondaryWindow extends JDialog {
 //                System.out.println("Handle Method: " + i + " - " + wordList[i].words);
 //            }
 
+            serverStatusText.setText("received.");
             textField1.setText(msg);
             //----------------------------------------
         }
