@@ -3,6 +3,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
 import java.io.IOException;
+import java.time.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 //CHAT RELATED ---------------------------
 import java.net.*;
@@ -133,6 +136,34 @@ public class MainWindow extends javax.swing.JDialog {
         sortBarcodeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onSortBarcode();
+            }
+        });
+
+        // Binds the automation retrieve functionality to the retrieve button.
+        retrieveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onRetrieve();
+            }
+        });
+
+        // Binds the automation return functionality to the return button.
+        returnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onReturn();
+            }
+        });
+
+        // Binds the automation remove functionality to the remove button.
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onRemove();
+            }
+        });
+
+        // Binds the automation 'add to collection' functionality to the collection button.
+        collectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onCollection();
             }
         });
 
@@ -348,6 +379,46 @@ public class MainWindow extends javax.swing.JDialog {
 
     }
 
+    private void onRetrieve() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
+        String output = LocalDateTime.now().format(dtf) + " - SENT- Retrieve Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
+        processTextArea.append(output + "\n");
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve";
+        send(message);
+    }
+
+    private void onReturn() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
+        String output = LocalDateTime.now().format(dtf) + " - SENT- Return Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
+        processTextArea.append(output + "\n");
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Return";
+        send(message);
+    }
+
+    private void onCollection() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
+        String output = LocalDateTime.now().format(dtf) + " - SENT- Add Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
+        processTextArea.append(output + "\n");
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Add";
+        send(message);
+    }
+
+    private void onRemove() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
+        String output = LocalDateTime.now().format(dtf) + " - SENT- Remove Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
+        processTextArea.append(output + "\n");
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Remove";
+        send(message);
+    }
+
     /**
      * Initializes the window UI components.
      * This method creates the initial table model and loads data from the .txt file.
@@ -437,12 +508,12 @@ public class MainWindow extends javax.swing.JDialog {
         client.interrupt();
     }
 
-    private void send() {
+    private void send(String msg) {
         try
         {
-            streamOut.writeUTF(processTextArea.getText());
+            streamOut.writeUTF(msg);
             streamOut.flush();
-            processTextArea.setText("");
+//            processTextArea.setText("");
         }
         catch (IOException ioe)
         {

@@ -91,10 +91,8 @@ public class SecondaryWindow extends JDialog {
 
         tableScrollPane = new JScrollPane(tableModel.getTable());
 
-        String[] dropDownItems = {"Add", "Remove", "Retrieve", "Return", "Sort"};
-        DefaultComboBoxModel dModel = new DefaultComboBoxModel(dropDownItems);
+        actionsDropdown = new JComboBox();
 
-        actionsDropdown = new JComboBox(dModel);
         actionsDropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -189,8 +187,13 @@ public class SecondaryWindow extends JDialog {
 //                System.out.println("Handle Method: " + i + " - " + wordList[i].words);
 //            }
 
+            String[] temp = msg.split(";");
+            textField1.setText(temp[1]);
+            textField2.setText(temp[2]);
+            actionsDropdown.setSelectedItem(temp[3]);
+
             serverStatusText.setText("received.");
-            textField1.setText(msg);
+//            textField1.setText(msg);
             //----------------------------------------
         }
     }
