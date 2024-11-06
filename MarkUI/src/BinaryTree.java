@@ -84,9 +84,7 @@ public class BinaryTree
     // Recursion is used to go to one node and
     // then go to its child nodes and so forth
     public void inOrderTraverseTree(Node focusNode, JTextArea output) {
-
         if (focusNode != null) {
-
             // Traverse the left node
             inOrderTraverseTree(focusNode.leftChild, output);
             output.append(focusNode.name + "\n");

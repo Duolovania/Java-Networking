@@ -23,7 +23,7 @@ public class MainWindow extends javax.swing.JDialog {
     private Socket socket = null;
     private DataInputStream console = null;
     private DataOutputStream streamOut = null;
-//    private ChatClientThread1 client = null;
+    private ChatClientThread1 client = null;
     private String serverName = "localhost";
     private int serverPort = 4444;
 
@@ -33,6 +33,7 @@ public class MainWindow extends javax.swing.JDialog {
     private JTextField titleTextField, authorTextField, xTextField, yTextField, barcodeTextField, sortTextField, findBarcodeTextField, searchTextField, sectionTextField;
     private JTextArea descriptionTextArea, processTextArea;
     private JScrollPane tableScrollPane;
+    private JLabel serverStatusText;
     private DataManager dataManager;
     private ArchiveCDTable tableModel;
     public SaveData fileData;
@@ -41,7 +42,7 @@ public class MainWindow extends javax.swing.JDialog {
 
     public MainWindow() {
         setContentPane(contentPane);
-        setModal(true);
+        setModal(false);
         setTitle("Archive Console"); // Sets the label of the window.
 
         binaryTree = new BinaryTree();
@@ -84,7 +85,7 @@ public class MainWindow extends javax.swing.JDialog {
         // Binds the graphics functionality to the graphical button.
         graphicalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                onPopup();
+                onGraphical();
             }
         });
 
@@ -154,6 +155,8 @@ public class MainWindow extends javax.swing.JDialog {
                 onCancel();
             }
         }, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        connect(serverName, serverPort);
     }
 
     private void updateProcessLog() {
@@ -187,8 +190,8 @@ public class MainWindow extends javax.swing.JDialog {
      * The graphical button on-click method.
      * This method gets called each time the user presses the graphical button.
      */
-    private void onPopup() {
-        SecondaryWindow dialog = new SecondaryWindow(this);
+    private void onGraphical() {
+        SecondaryWindow dialog = new SecondaryWindow();
         dialog.pack();
         dialog.setVisible(true);
     }
@@ -346,17 +349,6 @@ public class MainWindow extends javax.swing.JDialog {
     }
 
     /**
-     * The program entry point.
-     * This method gets called as the program starts.
-     */
-    public static void main(String[] args) {
-        MainWindow dialog = new MainWindow(); // Creates a new window.
-        dialog.pack(); // Sets the window size to the preferred size and layouts.
-        dialog.setVisible(true); // Enables window visibility.
-        System.exit(0); // Exits the program.
-    }
-
-    /**
      * Initializes the window UI components.
      * This method creates the initial table model and loads data from the .txt file.
      */
@@ -392,6 +384,38 @@ public class MainWindow extends javax.swing.JDialog {
         processTextArea.setEditable(false);
     }
 
+    public void connect(String serverName, int serverPort)
+    {
+        System.out.println("Establishing connection. Please wait ...");
+        try
+        {
+            socket = new Socket(serverName, serverPort);
+            System.out.println("Connected: " + socket);
+            open();
+        }
+        catch (UnknownHostException uhe)
+        {
+            System.out.println("Host unknown: " + uhe.getMessage());
+        }
+        catch (IOException ioe)
+        {
+            System.out.println("Unexpected exception: " + ioe.getMessage());
+        }
+    }
+
+    public void open()
+    {
+        try
+        {
+            streamOut = new DataOutputStream(socket.getOutputStream());
+            client = new ChatClientThread1(this, socket);
+        }
+        catch (IOException ioe)
+        {
+            System.out.println("Error opening output stream: " + ioe);
+        }
+    }
+
     public void close()
     {
         try
@@ -409,21 +433,45 @@ public class MainWindow extends javax.swing.JDialog {
         {
             System.out.println("Error closing ...");
         }
-//        client.close();
-//        client.stop();
+        client.close();
+        client.interrupt();
     }
 
     private void send() {
-//        try
-//        {
-//            streamOut.writeUTF(txtWord1.getText());
-//            streamOut.flush();
-//            txtWord1.setText("");
-//        }
-//        catch (IOException ioe)
-//        {
-//            System.out.println("Sending error: " + ioe.getMessage());
-//            close();
-//        }
+        try
+        {
+            streamOut.writeUTF(processTextArea.getText());
+            streamOut.flush();
+            processTextArea.setText("");
+        }
+        catch (IOException ioe)
+        {
+            System.out.println("Sending error: " + ioe.getMessage());
+            close();
+        }
+    }
+
+    public void handle(String msg)
+    {
+        if (msg.equals(".bye"))
+        {
+            System.out.println("Good bye. Press EXIT button to exit ...");
+            close();
+        }
+        else
+        {
+            System.out.println(msg);
+
+            // NEW -----------------------------------
+//            currentAssocWord++;
+//            wordList[currentAssocWord] = new AssocData(msg);
+//            for (int i = 0; i < currentAssocWord; i++)
+//            {
+//                System.out.println("Handle Method: " + i + " - " + wordList[i].words);
+//            }
+
+            processTextArea.setText(msg);
+            //----------------------------------------
+        }
     }
 }
