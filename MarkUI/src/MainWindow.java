@@ -382,7 +382,7 @@ public class MainWindow extends javax.swing.JDialog {
     private void onRetrieve() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
-        String output = LocalDateTime.now().format(dtf) + " - SENT- Retrieve Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
+        String output = LocalDateTime.now().format(dtf) + " - SENT- Retrieve Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
         processTextArea.append(output + "\n");
 
         String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve";
@@ -392,10 +392,10 @@ public class MainWindow extends javax.swing.JDialog {
     private void onReturn() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
-        String output = LocalDateTime.now().format(dtf) + " - SENT- Return Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
+        String output = LocalDateTime.now().format(dtf) + " - SENT- Return Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
         processTextArea.append(output + "\n");
 
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Return";
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Return;" + titleTextField.getText();
         send(message);
     }
 
@@ -513,7 +513,6 @@ public class MainWindow extends javax.swing.JDialog {
         {
             streamOut.writeUTF(msg);
             streamOut.flush();
-//            processTextArea.setText("");
         }
         catch (IOException ioe)
         {
@@ -531,18 +530,7 @@ public class MainWindow extends javax.swing.JDialog {
         }
         else
         {
-            System.out.println(msg);
-
-            // NEW -----------------------------------
-//            currentAssocWord++;
-//            wordList[currentAssocWord] = new AssocData(msg);
-//            for (int i = 0; i < currentAssocWord; i++)
-//            {
-//                System.out.println("Handle Method: " + i + " - " + wordList[i].words);
-//            }
-
-            processTextArea.setText(msg);
-            //----------------------------------------
+            processTextArea.append(msg + "\n");
         }
     }
 }

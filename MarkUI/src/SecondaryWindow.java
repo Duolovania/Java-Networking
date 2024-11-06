@@ -8,6 +8,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class SecondaryWindow extends JDialog {
     private Socket socket = null;
@@ -25,6 +27,8 @@ public class SecondaryWindow extends JDialog {
     private JScrollPane tableScrollPane;
     private JLabel serverStatusText;
     private ArchiveCDTable tableModel;
+
+    private ArchiveCD selectedCD;
 
     public SecondaryWindow() {
         setContentPane(contentPane);
@@ -79,6 +83,8 @@ public class SecondaryWindow extends JDialog {
     private void onTableClick() {
         textField2.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()); // Sets the 'section' text field to the table column.
         textField1.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString()); // Sets the 'barcode' text field to the table column.
+
+        selectedCD = new ArchiveCD(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 1).toString(), tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 3).toString().charAt(0), Integer.parseInt(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString()));
     }
 
     private void createUIComponents() {
@@ -158,10 +164,13 @@ public class SecondaryWindow extends JDialog {
     private void send() {
         try
         {
-            streamOut.writeUTF("Hello");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
+            String output = LocalDateTime.now().format(dtf) + " - RCVD- Return Item - " + selectedCD.getBarcode() + " " + selectedCD.getTitle();
+
+            streamOut.writeUTF(output);
             streamOut.flush();
             serverStatusText.setText("sent.");
-//            processTextArea.setText(""); // Reset vlaues or something
         }
         catch (IOException ioe)
         {
@@ -179,22 +188,14 @@ public class SecondaryWindow extends JDialog {
         }
         else
         {
-            // NEW -----------------------------------
-//            currentAssocWord++;
-//            wordList[currentAssocWord] = new AssocData(msg);
-//            for (int i = 0; i < currentAssocWord; i++)
-//            {
-//                System.out.println("Handle Method: " + i + " - " + wordList[i].words);
-//            }
-
             String[] temp = msg.split(";");
             textField1.setText(temp[1]);
             textField2.setText(temp[2]);
             actionsDropdown.setSelectedItem(temp[3]);
 
+            selectedCD = new ArchiveCD(temp[4], temp[2].charAt(0), Integer.parseInt(temp[1]));
+
             serverStatusText.setText("received.");
-//            textField1.setText(msg);
-            //----------------------------------------
         }
     }
 }

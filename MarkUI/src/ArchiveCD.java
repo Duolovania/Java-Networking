@@ -72,4 +72,10 @@ public class ArchiveCD
         mDescription = description;
         mOnLoan = onLoan;
     }
+
+    public ArchiveCD(String title, char section, int barcode) {
+        mTitle = title;
+        mSection = section;
+        mBarcode = barcode;
+    }
 }
