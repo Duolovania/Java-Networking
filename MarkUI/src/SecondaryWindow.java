@@ -194,6 +194,7 @@ public class SecondaryWindow extends JDialog {
             actionsDropdown.setSelectedItem(temp[3]);
 
             selectedCD = new ArchiveCD(temp[4], temp[2].charAt(0), Integer.parseInt(temp[1]));
+            tableModel.getTable().setRowSelectionInterval(0, 0);
 
             serverStatusText.setText("received.");
         }

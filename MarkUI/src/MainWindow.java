@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
 
 //CHAT RELATED ---------------------------
 import java.net.*;
@@ -380,16 +381,31 @@ public class MainWindow extends javax.swing.JDialog {
     }
 
     private void onRetrieve() {
+        // Checks if any of the text fields are blank/no CD is selected.
+        if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "No CD is selected.");
+            return;
+        }
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
 
         String output = LocalDateTime.now().format(dtf) + " - SENT- Retrieve Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
         processTextArea.append(output + "\n");
 
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve";
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve;" + titleTextField.getText();
         send(message);
     }
 
     private void onReturn() {
+        // Checks if any of the text fields are blank/no CD is selected.
+        if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "No CD is selected.");
+            return;
+        }
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
         String output = LocalDateTime.now().format(dtf) + " - SENT- Return Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
@@ -400,22 +416,37 @@ public class MainWindow extends javax.swing.JDialog {
     }
 
     private void onCollection() {
+        // Checks if any of the text fields are blank/no CD is selected.
+        if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "No CD is selected.");
+            return;
+        }
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
+        tableModel.getTable().getModel().setValueAt(true, tableModel.getTable().getSelectedRow(), 7); // Updates the table row 'x' column.
 
         String output = LocalDateTime.now().format(dtf) + " - SENT- Add Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
         processTextArea.append(output + "\n");
-
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Add";
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Add;" + titleTextField.getText();
         send(message);
     }
 
     private void onRemove() {
+        // Checks if any of the text fields are blank/no CD is selected.
+        if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "No CD is selected.");
+            return;
+        }
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
         String output = LocalDateTime.now().format(dtf) + " - SENT- Remove Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
         processTextArea.append(output + "\n");
 
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Remove";
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Remove;" + titleTextField.getText();
         send(message);
     }
 
@@ -532,5 +563,17 @@ public class MainWindow extends javax.swing.JDialog {
         {
             processTextArea.append(msg + "\n");
         }
+    }
+
+    /**
+     * This method checks if a string is null or empty.
+     *
+     * @param text this parameter takes in a string that is used for checking.
+     * @return the result of the null/empty check.
+     */
+    private boolean isNullOrEmpty(String text)
+    {
+        if (text == null || text.isEmpty()) return true;
+        return false;
     }
 }
