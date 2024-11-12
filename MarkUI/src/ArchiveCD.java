@@ -78,4 +78,16 @@ public class ArchiveCD
         mSection = section;
         mBarcode = barcode;
     }
+
+    /**
+     * This method replaces the 'toString' method.
+     *
+     * @return a new singular string data concatenating the properties stored within the object.
+     */
+//    @Override
+    public String toString()
+    {
+        String loan = (mOnLoan) ? "Yes" : "No";
+        return mID + ";" + mTitle + ";" + mAuthor + ";" + mSection + ";" + mX + ";" + mY + ";" + mBarcode + ";" + mDescription + ";" + loan + ";";
+    }
 }

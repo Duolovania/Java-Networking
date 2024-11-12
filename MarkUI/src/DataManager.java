@@ -42,6 +42,9 @@ public class DataManager
         {
             BufferedWriter output = new BufferedWriter(new FileWriter(fileName)); // Retrieves data from the file path.
 
+            output.write("ID;Title;Author;Section;X;Y;BarCode;Description;OnLoan");
+            output.newLine(); // Creates a new line.
+
             for (int i = 0; i < newData.length; i++) // Loops for each item in the data collection.
             {
                 if (newData[i] == null) // Checks if the data is valid.
@@ -49,7 +52,7 @@ public class DataManager
                     break; // Ignores the item.
                 }
 
-                output.write(newData[i].toString()); // Writes the data to the file.
+                output.write(newData[i].toString());
                 output.newLine(); // Creates a new line.
             }
 

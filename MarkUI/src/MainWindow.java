@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
@@ -22,10 +24,10 @@ import java.io.*;
  * Version 1.00.
  * Author: Ryhan Khan.
  */
-public class MainWindow extends javax.swing.JDialog {
+public class MainWindow extends javax.swing.JFrame {
 
     private Socket socket = null;
-    private DataInputStream console = null;
+//    private DataInputStream console = null;
     private DataOutputStream streamOut = null;
     private ChatClientThread1 client = null;
     private String serverName = "localhost";
@@ -43,13 +45,22 @@ public class MainWindow extends javax.swing.JDialog {
     public SaveData fileData;
 
     private BinaryTree binaryTree;
+    private DLList doublyLinkedList;
+
+    private enum FindBarCodeState {
+        None,
+        LinkedList,
+        BinaryTree;
+    }
+
+    private FindBarCodeState barCodeState = FindBarCodeState.None;
 
     public MainWindow() {
         setContentPane(contentPane);
-        setModal(false);
         setTitle("Archive Console"); // Sets the label of the window.
 
         binaryTree = new BinaryTree();
+        doublyLinkedList = new DLList();
 
         // Binds the search functionality to the search button.
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +179,49 @@ public class MainWindow extends javax.swing.JDialog {
             }
         });
 
+        // Binds the process log functionality to the process log button.
+        processButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onProcessLog();
+            }
+        });
+
+        mostlySortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onMostlySort();
+            }
+        });
+
+        sortRandomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onRandomSort();
+            }
+        });
+
+        reverseSortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onReverseSort();
+            }
+        });
+
+        // Binds the 'find bar code' functionality to the find bar code text field.
+        findBarcodeTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                findBarCode(findBarcodeTextField.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                findBarCode(findBarcodeTextField.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                findBarCode(findBarcodeTextField.getText());
+            }
+        });
+
         // Binds the table clicking functionality to the table model.
         tableModel.getTable().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) { onTableClick(); }
@@ -189,14 +243,6 @@ public class MainWindow extends javax.swing.JDialog {
         }, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         connect(serverName, serverPort);
-    }
-
-    private void updateProcessLog() {
-        DLList tempList = new DLList();
-        tempList.convertBinaryTree((binaryTree.root));
-
-        String newString = tempList.displaySingle();
-//        processTextArea.setText(newString);
     }
 
     /**
@@ -226,6 +272,13 @@ public class MainWindow extends javax.swing.JDialog {
         SecondaryWindow dialog = new SecondaryWindow();
         dialog.pack();
         dialog.setVisible(true);
+    }
+
+    private void onProcessLog() {
+        processTextArea.setText("");
+        barCodeState = FindBarCodeState.LinkedList;
+
+        processTextArea.setText(doublyLinkedList.display());
     }
 
     /**
@@ -302,6 +355,19 @@ public class MainWindow extends javax.swing.JDialog {
             tableModel.getTable().getModel().setValueAt(barcodeTextField.getText(), tableModel.getTable().getSelectedRow(), 5); // Updates the table row 'barcode' column.
             tableModel.getTable().getModel().setValueAt(descriptionTextArea.getText(), tableModel.getTable().getSelectedRow(), 6); // Updates the table row 'description' column.
 
+            fileData.dataCollection[tableModel.getTable().getSelectedRow()] = new ArchiveCD(tableModel.getTable().getSelectedRow(),
+                    titleTextField.getText(),
+                    authorTextField.getText(),
+                    sectionTextField.getText().charAt(0),
+                    Integer.parseInt(xTextField.getText()),
+                    Integer.parseInt(yTextField.getText()),
+                    Integer.parseInt(barcodeTextField.getText()),
+                    descriptionTextArea.getText(),
+                    false
+            );
+
+            dataManager.saveFile(fileData.dataCollection);
+
             return; // Exits the method to prevent further changes.
         }
 
@@ -319,7 +385,22 @@ public class MainWindow extends javax.swing.JDialog {
                  false
         );
 
+        dataManager.saveFile(fileData.dataCollection);
+        System.out.println("Saved Data File");
+
         tableModel.updateTable(fileData.toObjectArray()); // Refreshes the table to display the new entry.
+    }
+
+    private void onMostlySort() {
+        send(" ;Mostly Sort;" + sortTextField.getText().charAt(0));
+    }
+
+    private void onRandomSort() {
+        send(";Random Sort;" + sortTextField.getText().charAt(0));
+    }
+
+    private void onReverseSort() {
+        send(";Reverse Sort;" + sortTextField.getText().charAt(0));
     }
 
     /**
@@ -357,19 +438,22 @@ public class MainWindow extends javax.swing.JDialog {
     private void onInOrder() {
         processTextArea.setText("");
         binaryTree.inOrderTraverseTree(binaryTree.root, processTextArea);
-        updateProcessLog();
+
+        barCodeState = FindBarCodeState.BinaryTree;
     }
 
     private void onPreOrder() {
         processTextArea.setText("");
         binaryTree.preorderTraverseTree(binaryTree.root, processTextArea);
-        updateProcessLog();
+
+        barCodeState = FindBarCodeState.BinaryTree;
     }
 
     private void onPostOrder() {
         processTextArea.setText("");
         binaryTree.postOrderTraverseTree(binaryTree.root, processTextArea);
-        updateProcessLog();
+
+        barCodeState = FindBarCodeState.BinaryTree;
     }
 
     private void onHashSave() {
@@ -377,7 +461,7 @@ public class MainWindow extends javax.swing.JDialog {
     }
 
     private void onHashDisplay() {
-
+        processTextArea.setText(binaryTree.hashDisplay());
     }
 
     private void onRetrieve() {
@@ -390,11 +474,12 @@ public class MainWindow extends javax.swing.JDialog {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
+        String output = LocalDateTime.now().format(dtf) + " - SENT - Retrieve Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
 
-        String output = LocalDateTime.now().format(dtf) + " - SENT- Retrieve Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
-        processTextArea.append(output + "\n");
+        doublyLinkedList.insertAtEnd(output + "\n");
+        processTextArea.setText(doublyLinkedList.display());
 
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve;" + titleTextField.getText();
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
         send(message);
     }
 
@@ -408,10 +493,12 @@ public class MainWindow extends javax.swing.JDialog {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
-        String output = LocalDateTime.now().format(dtf) + " - SENT- Return Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
-        processTextArea.append(output + "\n");
+        String output = LocalDateTime.now().format(dtf) + " - SENT - Return Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
 
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Return;" + titleTextField.getText();
+        doublyLinkedList.insertAtEnd(output + "\n");
+        processTextArea.setText(doublyLinkedList.display());
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Return;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
         send(message);
     }
 
@@ -425,11 +512,12 @@ public class MainWindow extends javax.swing.JDialog {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
-        tableModel.getTable().getModel().setValueAt(true, tableModel.getTable().getSelectedRow(), 7); // Updates the table row 'x' column.
+        String output = LocalDateTime.now().format(dtf) + " - SENT - Add Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
 
-        String output = LocalDateTime.now().format(dtf) + " - SENT- Add Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
-        processTextArea.append(output + "\n");
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Add;" + titleTextField.getText();
+        doublyLinkedList.insertAtEnd(output + "\n");
+        processTextArea.setText(doublyLinkedList.display());
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Add;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
         send(message);
     }
 
@@ -443,11 +531,27 @@ public class MainWindow extends javax.swing.JDialog {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
-        String output = LocalDateTime.now().format(dtf) + " - SENT- Remove Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
-        processTextArea.append(output + "\n");
+        String output = LocalDateTime.now().format(dtf) + " - SENT - Remove Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
 
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Remove;" + titleTextField.getText();
+        doublyLinkedList.insertAtEnd(output + "\n");
+        processTextArea.setText(doublyLinkedList.display());
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Remove;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
         send(message);
+    }
+
+    private void findBarCode(String value) {
+        switch (barCodeState)
+        {
+            case None:
+                return;
+            case BinaryTree:
+//                binaryTree.findNode(value);
+                break;
+            case LinkedList:
+                doublyLinkedList.find(value);
+                break;
+        }
     }
 
     /**
@@ -561,7 +665,25 @@ public class MainWindow extends javax.swing.JDialog {
         }
         else
         {
-            processTextArea.append(msg + "\n");
+            String[] temp = msg.split(";");
+
+            doublyLinkedList.insertAtEnd(temp[0] + "\n");
+            processTextArea.setText(doublyLinkedList.display());
+
+            tableModel.getTable().setRowSelectionInterval(Integer.parseInt(temp[1]), Integer.parseInt(temp[1]));
+
+            if (msg.contains("Retrieve"))
+            {
+                tableModel.getTable().setValueAt(true, Integer.parseInt(temp[1]), 7);
+            }
+            else if (msg.contains("Return"))
+            {
+                tableModel.getTable().setValueAt(false, Integer.parseInt(temp[1]), 7);
+            }
+            else if (msg.contains("Remove"))
+            {
+                tableModel.getTable().remove(Integer.parseInt(temp[1]));
+            }
         }
     }
 

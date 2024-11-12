@@ -26,12 +26,33 @@ public class DLList {
         convertBinaryTree(root.rightChild);
     }
 
+    public void insertAtEnd(String newData) {
+        Node newNode = new Node(newData);
+
+        if (head == null)
+        {
+            head = newNode;
+        }
+        else
+        {
+            Node current = head;
+
+            while (current.rightChild != null)
+            {
+                current = current.rightChild;
+            }
+
+            current.rightChild = newNode;
+            newNode.leftChild = current;
+        }
+    }
+
     public Node find(String value) {
         Node current = head;
 
         while (current != null)
         {
-            if (current.name == value)
+            if (current.name.equals(value))
             {
                 return current;
             }
@@ -44,21 +65,7 @@ public class DLList {
         return null;
     }
 
-    public List<String> display() {
-        List<String> temp = new ArrayList<>();
-
-        Node current = head;
-
-        while (current != null)
-        {
-            temp.add(current.name);
-            current = current.rightChild;
-        }
-
-        return temp;
-    }
-
-    public String displaySingle() {
+    public String display() {
         String temp = "";
 
         Node current = head;
@@ -70,22 +77,5 @@ public class DLList {
         }
 
         return temp;
-    }
-}
-
-class DLNode {
-    String value;
-    DLNode prev, next;
-
-    public DLNode() {
-        value = null;
-        prev = null;
-        next = null;
-    }
-
-    public DLNode(String dataValue) {
-        value = dataValue;
-        prev = null;
-        next = null;
     }
 }

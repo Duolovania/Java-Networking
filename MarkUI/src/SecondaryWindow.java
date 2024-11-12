@@ -1,4 +1,7 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -10,8 +13,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Vector;
 
-public class SecondaryWindow extends JDialog {
+public class SecondaryWindow extends JFrame {
     private Socket socket = null;
     private DataInputStream console = null;
     private DataOutputStream streamOut = null;
@@ -25,14 +31,15 @@ public class SecondaryWindow extends JDialog {
     private JTextArea textArea1;
     private JComboBox actionsDropdown;
     private JScrollPane tableScrollPane;
-    private JLabel serverStatusText;
+    private JLabel serverStatusText, sortText;
     private ArchiveCDTable tableModel;
 
     private ArchiveCD selectedCD;
+    private SaveData fileData;
+    private char sortSection;
 
     public SecondaryWindow() {
         setContentPane(contentPane);
-        setModal(false);
         setSize(800, 600);
         setTitle("Automation Console");
 
@@ -45,6 +52,29 @@ public class SecondaryWindow extends JDialog {
         processButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onProcess();
+            }
+        });
+
+        textField2.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkAddVisibility();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkAddVisibility();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkAddVisibility();
+            }
+        });
+
+        button1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                onAddItem();
             }
         });
 
@@ -76,6 +106,20 @@ public class SecondaryWindow extends JDialog {
         dispose();
     }
 
+    private void checkAddVisibility() {
+        if (textField2.getText().equals(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()))
+        {
+            button1.setEnabled(false);
+            return;
+        }
+
+        button1.setEnabled(true);
+    }
+
+    private void onAddItem() {
+//        for (a)
+    }
+
     private void onProcess() {
         send();
     }
@@ -89,9 +133,8 @@ public class SecondaryWindow extends JDialog {
 
     private void createUIComponents() {
         DataManager dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt");
-        SaveData fileData = dataManager.loadFile();
+        fileData = dataManager.loadFile();
 
-//        JOptionPane.showMessageDialog(this, "Failed to retrieve Archive Console data. Loading data from '" + dataManager.getFileName() + "'.");
 
         tableModel = new ArchiveCDTable(fileData.toObjectArray(), 7);
 
@@ -166,7 +209,7 @@ public class SecondaryWindow extends JDialog {
         {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
-            String output = LocalDateTime.now().format(dtf) + " - RCVD- Return Item - " + selectedCD.getBarcode() + " " + selectedCD.getTitle();
+            String output = LocalDateTime.now().format(dtf) + " - RCVD - " + actionsDropdown.getSelectedItem() + " - "  + selectedCD.getBarcode() + " " + selectedCD.getTitle() + ";" + tableModel.getTable().getSelectedRow();
 
             streamOut.writeUTF(output);
             streamOut.flush();
@@ -189,14 +232,83 @@ public class SecondaryWindow extends JDialog {
         else
         {
             String[] temp = msg.split(";");
+
+            if (temp[1].equals("Mostly Sort") || temp[1].equals("Random Sort") || temp[1].equals("Reverse Sort"))
+            {
+                sortText.setText(temp[1]);
+                sortSection = temp[2].charAt(0);
+                actionsDropdown.setSelectedItem("Sort");
+                sortTable();
+                return;
+            }
+
             textField1.setText(temp[1]);
             textField2.setText(temp[2]);
             actionsDropdown.setSelectedItem(temp[3]);
 
             selectedCD = new ArchiveCD(temp[4], temp[2].charAt(0), Integer.parseInt(temp[1]));
-            tableModel.getTable().setRowSelectionInterval(0, 0);
+            tableModel.getTable().setRowSelectionInterval(Integer.parseInt(temp[5]), Integer.parseInt(temp[5]));
 
             serverStatusText.setText("received.");
+        }
+    }
+
+    private void sortTable() {
+        switch (sortText.getText())
+        {
+            case "Random Sort":
+                randomSort();
+                break;
+            case "Reverse Sort":
+                reverseSort();
+                break;
+            case "Mostly Sort":
+                mostlySort();
+                break;
+        }
+    }
+
+    private void mostlySort() {
+        tableModel.updateTable(tableModel.insertionSortForSection(sortSection, fileData.dataCollection)); // Refreshes the table to display the sorted data.
+    }
+
+    private void reverseSort() {
+        ArrayList<Vector<Object>> rows = new ArrayList<>();
+        for (int i = 0; i < tableModel.model.getRowCount(); i++) {
+            Vector<Object> row = (Vector<Object>) tableModel.model.getDataVector().get(i);
+            rows.add(row);
+        }
+
+        // Sort rows in reverse order based on the first column (ID)
+        rows.sort((row1, row2) -> {
+            // Compare the first column (ID) as Integer for numeric sorting
+            Integer id1 = Integer.parseInt((String) row1.get(0));
+            Integer id2 = Integer.parseInt((String) row2.get(0));
+            return id2.compareTo(id1); // Reverse order
+        });
+
+        // Clear the model and add the sorted rows back
+        tableModel.model.setRowCount(0);
+        for (Vector<Object> row : rows) {
+            tableModel.model.addRow(row.toArray());
+        }
+    }
+
+    private void randomSort() {
+        ArrayList<Vector<Object>> rows = new ArrayList<>();
+        for (int i = 0; i < tableModel.getTable().getModel().getRowCount(); i++) {
+            Vector<Object> row = (Vector<Object>) tableModel.model.getDataVector().get(i);
+            rows.add(row);
+        }
+
+        // Shuffle the list of rows
+        Collections.shuffle(rows);
+
+        // Clear the model and add shuffled rows back
+        tableModel.model.setRowCount(0);
+        for (Vector<Object> row : rows)
+        {
+            tableModel.model.addRow(row.toArray());
         }
     }
 }

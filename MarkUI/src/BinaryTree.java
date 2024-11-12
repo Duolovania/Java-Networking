@@ -2,11 +2,12 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BinaryTree
 {
     Node root;
-    HashMap<String, List<String>> hashMap;
+    HashMap<String, List<String>> hashMap = new HashMap<>();
 
     public void genHashMap(Node focusNode)
     {
@@ -21,6 +22,29 @@ public class BinaryTree
         // Recursively traverse the left and right subtrees
         genHashMap(focusNode.leftChild);
         genHashMap(focusNode.rightChild);
+    }
+
+    public String hashDisplay() {
+        String result = hashMap.entrySet()
+                .stream()
+                .map(entry -> entry.getKey() + ": " + String.join(", ", entry.getValue()))
+                .collect(Collectors.joining("\n"));
+
+        return result;
+    }
+
+    public String display() {
+        String temp = "";
+
+        Node current = root;
+
+        while (current != null)
+        {
+            temp += current.name + "\n";
+            current = current.rightChild;
+        }
+
+        return temp;
     }
 
 
@@ -145,6 +169,10 @@ class Node {
 
     Node(int key, String name) {
         this.key = key;
+        this.name = name;
+    }
+
+    Node(String name) {
         this.name = name;
     }
 
