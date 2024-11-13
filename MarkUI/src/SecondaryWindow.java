@@ -273,24 +273,24 @@ public class SecondaryWindow extends JFrame {
     }
 
     private void reverseSort() {
-        ArrayList<Vector<Object>> rows = new ArrayList<>();
-        for (int i = 0; i < tableModel.model.getRowCount(); i++) {
-            Vector<Object> row = (Vector<Object>) tableModel.model.getDataVector().get(i);
-            rows.add(row);
-        }
+        Object[][] tempArr = tableModel.shellSortByTitle(fileData.dataCollection);
+        reverse2DArray(tempArr);
+        tableModel.updateTable(tempArr);
+    }
 
-        // Sort rows in reverse order based on the first column (ID)
-        rows.sort((row1, row2) -> {
-            // Compare the first column (ID) as Integer for numeric sorting
-            Integer id1 = Integer.parseInt((String) row1.get(0));
-            Integer id2 = Integer.parseInt((String) row2.get(0));
-            return id2.compareTo(id1); // Reverse order
-        });
+    public static void reverse2DArray(Object[][] array) {
+        reverseArray(array);
+    }
 
-        // Clear the model and add the sorted rows back
-        tableModel.model.setRowCount(0);
-        for (Vector<Object> row : rows) {
-            tableModel.model.addRow(row.toArray());
+    private static void reverseArray(Object[] row) {
+        int left = 0;
+        int right = row.length - 1;
+        while (left < right) {
+            Object temp = row[left];
+            row[left] = row[right];
+            row[right] = temp;
+            left++;
+            right--;
         }
     }
 

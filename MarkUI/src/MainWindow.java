@@ -392,14 +392,32 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     private void onMostlySort() {
+        if (isNullOrEmpty(sortTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a section.");
+            return;
+        }
+
         send(" ;Mostly Sort;" + sortTextField.getText().charAt(0));
     }
 
     private void onRandomSort() {
+        if (isNullOrEmpty(sortTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a section.");
+            return;
+        }
+
         send(";Random Sort;" + sortTextField.getText().charAt(0));
     }
 
     private void onReverseSort() {
+        if (isNullOrEmpty(sortTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a section.");
+            return;
+        }
+
         send(";Reverse Sort;" + sortTextField.getText().charAt(0));
     }
 

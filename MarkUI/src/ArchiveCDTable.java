@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -231,15 +232,28 @@ public class ArchiveCDTable {
     public Object[][] insertionSortForSection(char section, ArchiveCD[] originalArray) {
 
         int arrayLength = 0;
-        for (int i = 0; i < originalArray.length; i++) if (originalArray[i] != null) arrayLength++; // Counts how many valid items are in the array.
+        ArrayList<ArchiveCD> tempStringList = new ArrayList<>();
+
+        for (int i = 0; i < originalArray.length; i++)
+        {
+            if (originalArray[i] != null)
+            {
+                if (originalArray[i].getSection() == section)
+                {
+                    tempStringList.add(originalArray[i]);
+                    arrayLength++; // Counts how many valid items are in the array.
+
+                }
+
+            }
+        }
 
         String[] tempArr = new String[arrayLength]; // Creates an array to store CD barcodes.
         ArchiveCD[] sortedArray = new ArchiveCD[originalArray.length]; // Sets the sorted array
 
-        // Retrieves each title from the collection.
-        for (int i = 0; i < tempArr.length; i++)
+        for (int i = 0; i < tempStringList.toArray().length; i++)
         {
-            if (originalArray[i].getSection() == section) tempArr[i] = originalArray[i].getTitle();
+            tempArr[i] = tempStringList.get(i).getTitle();
         }
 
         InsertionSort sortAlgorithm = new InsertionSort();
@@ -249,7 +263,7 @@ public class ArchiveCDTable {
         for (int i = 0; i < tempArr.length; i++)
         {
             String tempTitle  = tempArr[i]; // Temporary author to be used in lambda function.
-            Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getAuthor().equals(tempTitle)).findFirst(); // Finds a CD with an author that matches the sorted authors.
+            Optional<ArchiveCD> result = Arrays.stream(originalArray).filter(item -> item.getTitle().equals(tempTitle)).findFirst(); // Finds a CD with an author that matches the sorted authors.
             if (result.isPresent()) sortedArray[i] = result.get(); // Sets the current CD to the correct CD in the sorted list of authors.
         }
 
