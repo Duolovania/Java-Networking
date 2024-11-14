@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,6 +16,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
+/**
+ * SecondaryWindow.java
+ *
+ * This class stores data and handles processes required to display GUI elements and necessary functionality for the Automation Console.
+ *
+ * Version 1.00.
+ * Author: Ryhan Khan.
+ */
 public class SecondaryWindow extends JFrame {
     private Socket socket = null;
     private DataInputStream console = null;
@@ -101,11 +108,19 @@ public class SecondaryWindow extends JFrame {
         connect(serverName, serverPort);
     }
 
+    /**
+     * The cancel button on-click method.
+     * This method gets called each time the user presses the cancel button.
+     */
     private void onCancel() {
         // add your code here if necessary
         dispose();
     }
 
+    /**
+     * Establishes whether the 'add item' button will be selectable.
+     * This method is called each time the user enters data into the section text field.
+     */
     private void checkAddVisibility() {
         if (textField2.getText().equals(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()))
         {
@@ -116,10 +131,20 @@ public class SecondaryWindow extends JFrame {
         button1.setEnabled(true);
     }
 
+    /**
+     * The add item button on-click method.
+     * This method gets called each time the user presses the add item button.
+     */
     private void onAddItem() {
 //        for (a)
     }
 
+    /**
+     * The process button on-click method.
+     * This method gets called each time the user presses the process button.
+     *
+     * This will send a message back to the Archive CD Console.
+     */
     private void onProcess() {
         send();
     }
@@ -131,6 +156,10 @@ public class SecondaryWindow extends JFrame {
         selectedCD = new ArchiveCD(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 1).toString(), tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 3).toString().charAt(0), Integer.parseInt(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString()));
     }
 
+    /**
+     * Initializes the window UI components.
+     * This method creates the initial table model and loads data from the .txt file.
+     */
     private void createUIComponents() {
         DataManager dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt");
         fileData = dataManager.loadFile();
@@ -151,6 +180,12 @@ public class SecondaryWindow extends JFrame {
         });
     }
 
+    /**
+     * Connects the program to the server.
+     *
+     * @param serverName the name of the server connection.
+     * @param serverPort the port of the server connection.
+     */
     public void connect(String serverName, int serverPort)
     {
         System.out.println("Establishing connection. Please wait ...");
@@ -170,6 +205,9 @@ public class SecondaryWindow extends JFrame {
         }
     }
 
+    /**
+     * Opens the server output stream.
+     */
     public void open()
     {
         try
@@ -183,6 +221,9 @@ public class SecondaryWindow extends JFrame {
         }
     }
 
+    /**
+     * Closes the server output stream.
+     */
     public void close()
     {
         try
@@ -204,6 +245,10 @@ public class SecondaryWindow extends JFrame {
         client.interrupt();
     }
 
+    /**
+     * Sends a message to the server.
+     * This message will be sent to all clients of the server.
+     */
     private void send() {
         try
         {
@@ -222,6 +267,11 @@ public class SecondaryWindow extends JFrame {
         }
     }
 
+    /**
+     * Handles the message from the server.
+     *
+     * @param msg the message that is received.
+     */
     public void handle(String msg)
     {
         if (msg.equals(".bye"))
@@ -253,6 +303,9 @@ public class SecondaryWindow extends JFrame {
         }
     }
 
+    /**
+     * This method will check to see which sorting algorithm should be executed.
+     */
     private void sortTable() {
         switch (sortText.getText())
         {
@@ -267,7 +320,7 @@ public class SecondaryWindow extends JFrame {
                 break;
         }
     }
-
+    
     private void mostlySort() {
         tableModel.updateTable(tableModel.insertionSortForSection(sortSection, fileData.dataCollection)); // Refreshes the table to display the sorted data.
     }

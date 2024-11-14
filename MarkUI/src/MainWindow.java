@@ -5,7 +5,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.event.*;
 import java.io.IOException;
-import java.time.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
@@ -18,8 +17,7 @@ import java.io.*;
 /**
  * MainWindow.java
  *
- * The main class for the application.
- * This class stores data and handles processes required to display GUI elements and necessary functionality.
+ * This class stores data and handles processes required to display GUI elements and necessary functionality for the Archive CD Console.
  *
  * Version 1.00.
  * Author: Ryhan Khan.
@@ -27,7 +25,6 @@ import java.io.*;
 public class MainWindow extends javax.swing.JFrame {
 
     private Socket socket = null;
-//    private DataInputStream console = null;
     private DataOutputStream streamOut = null;
     private ChatClientThread1 client = null;
     private String serverName = "localhost";
@@ -59,8 +56,8 @@ public class MainWindow extends javax.swing.JFrame {
         setContentPane(contentPane);
         setTitle("Archive Console"); // Sets the label of the window.
 
-        binaryTree = new BinaryTree();
-        doublyLinkedList = new DLList();
+        binaryTree = new BinaryTree(); // Initializes the binary tree object.
+        doublyLinkedList = new DLList(); // Initializes the doubly linked list object.
 
         // Binds the search functionality to the search button.
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -186,18 +183,21 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        // Binds the 'mostly sort' functionality to the 'mostly sort' button.
         mostlySortButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onMostlySort();
             }
         });
 
+        // Binds the random sort functionality to the random sort button.
         sortRandomButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onRandomSort();
             }
         });
 
+        // Binds the reverse sort functionality to the reverse sort button.
         reverseSortButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onReverseSort();
@@ -242,7 +242,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        connect(serverName, serverPort);
+        connect(serverName, serverPort); // connects this program to the server.
     }
 
     /**
@@ -267,13 +267,19 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * The graphical button on-click method.
      * This method gets called each time the user presses the graphical button.
+     *
+     * This will display a diagram of the binary tree.
      */
     private void onGraphical() {
-        SecondaryWindow dialog = new SecondaryWindow();
-        dialog.pack();
-        dialog.setVisible(true);
+
     }
 
+    /**
+     * The process log button on-click method.
+     * This method gets called each time the user presses the process log button.
+     *
+     * This will clear the process log text area and display the server log details.
+     */
     private void onProcessLog() {
         processTextArea.setText("");
         barCodeState = FindBarCodeState.LinkedList;
@@ -391,6 +397,12 @@ public class MainWindow extends javax.swing.JFrame {
         tableModel.updateTable(fileData.toObjectArray()); // Refreshes the table to display the new entry.
     }
 
+    /**
+     *  The 'mostly sort' button on-click method.
+     *  This method gets called each time the user presses the 'mostly sort' button.
+     *
+     *  This will send a message to the Archive CD window, triggering the corresponding sorting algorithm.
+     */
     private void onMostlySort() {
         if (isNullOrEmpty(sortTextField.getText()))
         {
@@ -401,6 +413,12 @@ public class MainWindow extends javax.swing.JFrame {
         send(" ;Mostly Sort;" + sortTextField.getText().charAt(0));
     }
 
+    /**
+     *  The random sort button on-click method.
+     *  This method gets called each time the user presses the random sort button.
+     *
+     *  This will send a message to the Archive CD window, triggering the corresponding sorting algorithm.
+     */
     private void onRandomSort() {
         if (isNullOrEmpty(sortTextField.getText()))
         {
@@ -411,6 +429,12 @@ public class MainWindow extends javax.swing.JFrame {
         send(";Random Sort;" + sortTextField.getText().charAt(0));
     }
 
+    /**
+     *  The reverse sort button on-click method.
+     *  This method gets called each time the user presses the  reverse sort button.
+     *
+     *  This will send a message to the Archive CD window, triggering the corresponding sorting algorithm.
+     */
     private void onReverseSort() {
         if (isNullOrEmpty(sortTextField.getText()))
         {
@@ -424,6 +448,8 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * The title sort button on-click method.
      * The method that gets called each time the user presses the title sort button.
+     *
+     * This will sort the collection by title and output the result onto the table UI.
      */
     private void onSortTitle() {
         tableModel.updateTable(tableModel.shellSortByTitle(fileData.dataCollection)); // Refreshes the table to display the sorted data.
@@ -440,6 +466,8 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * The author sort button on-click method.
      * The method that gets called each time the user presses the author sort button.
+     *
+     * This will sort the collection by author and output the result onto the table UI.
      */
     private void onSortAuthor() {
         tableModel.updateTable(tableModel.shellSortByAuthor(fileData.dataCollection)); // Refreshes the table to display the sorted data.
@@ -448,11 +476,19 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * The barcode sort button on-click method.
      * The method that gets called each time the user presses the barcode sort button.
+     *
+     * This will sort the collection by barcode and output the result onto the table UI.
      */
     private void onSortBarcode() {
         tableModel.updateTable(tableModel.shellSortByBarcode(fileData.dataCollection)); // Refreshes the table to display the sorted data.
     }
 
+    /**
+     * The binary tree 'in-order' button on-click method.
+     * The method that gets called each time the user presses the 'in-order' button.
+     *
+     * This will output the values of the binary tree using an in-order traversal.
+     */
     private void onInOrder() {
         processTextArea.setText("");
         binaryTree.inOrderTraverseTree(binaryTree.root, processTextArea);
@@ -460,6 +496,12 @@ public class MainWindow extends javax.swing.JFrame {
         barCodeState = FindBarCodeState.BinaryTree;
     }
 
+    /**
+     * The binary tree 'pre-order' button on-click method.
+     * The method that gets called each time the user presses the 'pre-order' button.
+     *
+     * This will output the values of the binary tree using a pre-order traversal.
+     */
     private void onPreOrder() {
         processTextArea.setText("");
         binaryTree.preorderTraverseTree(binaryTree.root, processTextArea);
@@ -467,6 +509,12 @@ public class MainWindow extends javax.swing.JFrame {
         barCodeState = FindBarCodeState.BinaryTree;
     }
 
+    /**
+     * The binary tree 'post-order' button on-click method.
+     * The method that gets called each time the user presses the 'post-order' button.
+     *
+     * This will output the values of the binary tree using a post-order traversal.
+     */
     private void onPostOrder() {
         processTextArea.setText("");
         binaryTree.postOrderTraverseTree(binaryTree.root, processTextArea);
@@ -474,33 +522,32 @@ public class MainWindow extends javax.swing.JFrame {
         barCodeState = FindBarCodeState.BinaryTree;
     }
 
+    /**
+     * The hashmap save button on-click method.
+     * The method that gets called each time the user presses the save button.
+     *
+     * This will generate the hashmap data.
+     */
     private void onHashSave() {
         binaryTree.genHashMap(binaryTree.root);
     }
 
+    /**
+     * The hashmap display button on-click method.
+     * The method that gets called each time the user presses the display button.
+     *
+     * This will display the hashmap data onto the screen.
+     */
     private void onHashDisplay() {
         processTextArea.setText(binaryTree.hashDisplay());
     }
 
-    private void onRetrieve() {
-        // Checks if any of the text fields are blank/no CD is selected.
-        if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
-        {
-            JOptionPane.showMessageDialog(this, "No CD is selected.");
-            return;
-        }
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
-
-        String output = LocalDateTime.now().format(dtf) + " - SENT - Retrieve Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
-
-        doublyLinkedList.insertAtEnd(output + "\n");
-        processTextArea.setText(doublyLinkedList.display());
-
-        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
-        send(message);
-    }
-
+    /**
+     * The return button on-click method.
+     * The method that gets called each time the user presses the return button.
+     *
+     * This will send a message to the Automation Console requesting the return of an item.
+     */
     private void onReturn() {
         // Checks if any of the text fields are blank/no CD is selected.
         if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
@@ -520,6 +567,37 @@ public class MainWindow extends javax.swing.JFrame {
         send(message);
     }
 
+    /**
+     * The retrieve button on-click method.
+     * The method that gets called each time the user presses the retrieve button.
+     *
+     * This will send a message to the Automation Console requesting retrieval of an item.
+     */
+    private void onRetrieve() {
+        // Checks if any of the text fields are blank/no CD is selected.
+        if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
+        {
+            JOptionPane.showMessageDialog(this, "No CD is selected.");
+            return;
+        }
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
+
+        String output = LocalDateTime.now().format(dtf) + " - SENT - Retrieve Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
+
+        doublyLinkedList.insertAtEnd(output + "\n");
+        processTextArea.setText(doublyLinkedList.display());
+
+        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
+        send(message);
+    }
+
+    /**
+     * The 'add to collection' button on-click method.
+     * The method that gets called each time the user presses the return button.
+     *
+     * This will send a message to the Automation Console requesting for an item to be added to the collection.
+     */
     private void onCollection() {
         // Checks if any of the text fields are blank/no CD is selected.
         if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
@@ -539,6 +617,12 @@ public class MainWindow extends javax.swing.JFrame {
         send(message);
     }
 
+    /**
+     * The remove button on-click method.
+     * The method that gets called each time the user presses the remove button.
+     *
+     * This will send a message to the Automation Console requesting for the removal of an item.
+     */
     private void onRemove() {
         // Checks if any of the text fields are blank/no CD is selected.
         if (isNullOrEmpty(barcodeTextField.getText()) || isNullOrEmpty(titleTextField.getText()) || isNullOrEmpty(sectionTextField.getText()))
@@ -558,6 +642,14 @@ public class MainWindow extends javax.swing.JFrame {
         send(message);
     }
 
+    /**
+     * The find by bar code method.
+     * The method that gets called each time the user presses enters text into the 'find by bar code' text field.
+     *
+     * This will perform the corresponding searching process depending on whether a binary tree or doubly linked list is displayed on the process log.
+     *
+     * @param value the search term.
+     */
     private void findBarCode(String value) {
         switch (barCodeState)
         {
@@ -608,6 +700,12 @@ public class MainWindow extends javax.swing.JFrame {
         processTextArea.setEditable(false);
     }
 
+    /**
+     * Connects the program to the server.
+     *
+     * @param serverName the name of the server connection.
+     * @param serverPort the port of the server connection.
+     */
     public void connect(String serverName, int serverPort)
     {
         System.out.println("Establishing connection. Please wait ...");
@@ -627,6 +725,9 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Opens the server output stream.
+     */
     public void open()
     {
         try
@@ -640,6 +741,9 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Closes the server output stream.
+     */
     public void close()
     {
         try
@@ -661,6 +765,12 @@ public class MainWindow extends javax.swing.JFrame {
         client.interrupt();
     }
 
+    /**
+     * Sends a message to the server.
+     * This message will be sent to all clients of the server.
+     *
+     * @param msg the message that will be sent.
+     */
     private void send(String msg) {
         try
         {
@@ -674,6 +784,11 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Handles the message from the server.
+     *
+     * @param msg the message that is received.
+     */
     public void handle(String msg)
     {
         if (msg.equals(".bye"))
