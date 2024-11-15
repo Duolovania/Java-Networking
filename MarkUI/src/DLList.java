@@ -1,79 +1,86 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DLList.java
+ *
+ * This class handles the features and functionality of the doubly linked list.
+ *
+ * Version 1.00.
+ * Author: Ryhan Khan.
+ */
 public class DLList {
 
-    Node head, prev = null;
+    Node head;
 
-    // Convert binary tree to doubly linked list using in-order traversal
-    public void convertBinaryTree(Node root) {
-        if (root == null) return;
-
-        // Process the left subtree
-        convertBinaryTree(root.leftChild);
-
-        // Link the current node
-        if (prev == null) {
-            head = root; // Set head if it's the first node
-        }
-        else {
-            prev.rightChild = root;
-            root.leftChild = prev;
-        }
-        prev = root; // Move previous to current
-
-        // Process the right subtree
-        convertBinaryTree(root.rightChild);
-    }
-
+    /**
+     * Adds an item to the end of the doubly linked list.
+     *
+     * @param newData the data that will be inserted.
+     */
     public void insertAtEnd(String newData) {
-        Node newNode = new Node(newData);
+        Node newNode = new Node(newData); // Creates a new node.
 
+        // Checks if the root exists.
         if (head == null)
         {
-            head = newNode;
+            head = newNode; // Sets the new node as the root.
         }
         else
         {
-            Node current = head;
+            Node current = head; // Starts at the root.
 
+            // Loops through each node until the end.
             while (current.rightChild != null)
             {
-                current = current.rightChild;
+                current = current.rightChild; // Moves to the next node.
             }
 
-            current.rightChild = newNode;
-            newNode.leftChild = current;
+            current.rightChild = newNode; // Inserts the new node to the end.
+            newNode.leftChild = current; // Sets the previous node to the node right before.
         }
     }
 
+    /**
+     * Searches the doubly linked list for an entry.
+     *
+     * @param value the entry that will be searched for.
+     */
     public Node find(String value) {
-        Node current = head;
+        Node current = head; // Starts at the root node.
 
+        // Loops while an entry exists.
         while (current != null)
         {
+            // Checks if the node matches.
             if (current.name.equals(value))
             {
-                return current;
+                return current; // Returns the node.
             }
             else
             {
-                current = current.rightChild;
+                current = current.rightChild; // Moves to the next node.
             }
         }
 
         return null;
     }
 
+    /**
+     * Generates the doubly linked list as a single string.
+     *
+     * @return each node of the doubly linked list.
+     */
     public String display() {
         String temp = "";
 
-        Node current = head;
+        Node current = head; // Starts at the root.
 
+        // Loops while an entry exists.
         while (current != null)
         {
-            temp += current.name + "\n";
-            current = current.rightChild;
+            temp += current.name + "\n"; // Adds the value of the node.
+            current = current.rightChild; // Moves to the next node.
         }
 
         return temp;

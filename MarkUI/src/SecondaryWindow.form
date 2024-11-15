@@ -82,7 +82,7 @@
               <text value="Bar Code of Selected Item:"/>
             </properties>
           </component>
-          <component id="aa853" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+          <component id="aa853" class="javax.swing.JTextField" binding="barcodeTextField">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -98,7 +98,7 @@
               <text value="Section:"/>
             </properties>
           </component>
-          <component id="e1ade" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+          <component id="e1ade" class="javax.swing.JTextField" binding="sectionTextField">
             <constraints>
               <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -106,7 +106,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="90b8c" class="javax.swing.JButton" binding="button1">
+          <component id="90b8c" class="javax.swing.JButton" binding="addItemButton">
             <constraints>
               <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>

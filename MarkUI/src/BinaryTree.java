@@ -4,27 +4,47 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * BinaryTree.java
+ *
+ * This class handles the features and functionality of the binary tree.
+ *
+ * Version 1.00.
+ * Author: Ryhan Khan.
+ */
 public class BinaryTree
 {
     Node root;
     HashMap<String, List<String>> hashMap = new HashMap<>();
 
+    /**
+     * Generates a hashmap using the binary tree.
+     *
+     * @param focusNode the root of the hashmap.
+     */
     public void genHashMap(Node focusNode)
     {
         if (focusNode == null) return;
 
         List<String> children = new ArrayList<String>();
-        if (focusNode.leftChild != null) children.add(focusNode.leftChild.name);
-        if (focusNode.rightChild != null) children.add(focusNode.rightChild.name);
 
-        hashMap.put(focusNode.name, children);
+        if (focusNode.leftChild != null) children.add(focusNode.leftChild.name); // Gets the left node.
+        if (focusNode.rightChild != null) children.add(focusNode.rightChild.name); // Gets the right node.
 
-        // Recursively traverse the left and right subtrees
+        hashMap.put(focusNode.name, children); // Inserts binary tree nodes into the hashmap.
+
+        // Recursively traverse the left and right subtrees.
         genHashMap(focusNode.leftChild);
         genHashMap(focusNode.rightChild);
     }
 
+    /**
+     * Displays the hashmap.
+     *
+     * @return a string containing all items.
+     */
     public String hashDisplay() {
+        // Loops through each item of the hashmap.
         String result = hashMap.entrySet()
                 .stream()
                 .map(entry -> entry.getKey() + ": " + String.join(", ", entry.getValue()))
@@ -33,41 +53,48 @@ public class BinaryTree
         return result;
     }
 
+    /**
+     * Displays the binary tree.
+     *
+     * @return a string containing all items.
+     */
     public String display() {
         String temp = "";
 
-        Node current = root;
+        Node current = root; // Start at the root.
 
+        // Loop while an entry exists.
         while (current != null)
         {
-            temp += current.name + "\n";
-            current = current.rightChild;
+            temp += current.name + "\n"; // Adds the value of the node.
+            current = current.rightChild; // Moves to the next node.
         }
 
         return temp;
     }
 
-
+    /**
+     * Adds an item to the binary tree.
+     *
+     * @param key the key of the new node.
+     * @param name the value of the new node.
+     */
     public void addNode(int key, String name) {
-
         // Create a new Node and initialize it
         Node newNode = new Node(key, name);
 
-        // If there is no root this becomes root
+        // Checks if there is no node.
         if (root == null)
         {
-            root = newNode;
+            root = newNode; // Sets the new node as the root.
         }
         else
         {
-            // Set root as the Node we will start
-            // with as we traverse the tree
-            Node focusNode = root;
+            Node focusNode = root; // Starts at the root.
+            Node parent; // Future parent for our new Node
 
-            // Future parent for our new Node
-            Node parent;
-
-            while (true) {
+            while (true)
+            {
                 // root is the top parent so we start
                 // there
                 parent = focusNode;
@@ -104,9 +131,12 @@ public class BinaryTree
         }
     }
 
-    // All nodes are visited in ascending order
-    // Recursion is used to go to one node and
-    // then go to its child nodes and so forth
+    /**
+     * Outputs each item using an in-order traversal.
+     *
+     * @param focusNode the root node.
+     * @param output the text area that will be output to.
+     */
     public void inOrderTraverseTree(Node focusNode, JTextArea output) {
         if (focusNode != null) {
             // Traverse the left node
@@ -118,6 +148,12 @@ public class BinaryTree
 
     }
 
+    /**
+     * Outputs each item using a pre-order traversal.
+     *
+     * @param focusNode the root node.
+     * @param output the text area that will be output to.
+     */
     public void preorderTraverseTree(Node focusNode, JTextArea output) {
         if (focusNode != null) {
             output.append(focusNode.name + "\n");
@@ -126,6 +162,12 @@ public class BinaryTree
         }
     }
 
+    /**
+     * Outputs each item using a post-order traversal.
+     *
+     * @param focusNode the root node.
+     * @param output the text area that will be output to.
+     */
     public void postOrderTraverseTree(Node focusNode, JTextArea output) {
         if (focusNode != null) {
             postOrderTraverseTree(focusNode.leftChild, output);
@@ -134,28 +176,28 @@ public class BinaryTree
         }
     }
 
-    public Node findNode(int key) {
-        // Start at the top of the tree
-        Node focusNode = root;
-
-        // While we haven't found the Node
-        // keep looking
-        while (focusNode.key != key) {
-            // If we should search to the left
-            if (key < focusNode.key) {
-                // Shift the focus Node to the left child
-                focusNode = focusNode.leftChild;
-            } else {
-                // Shift the focus Node to the right child
-                focusNode = focusNode.rightChild;
-            }
-
-            // The node wasn't found
-            if (focusNode == null)
-                return null;
+    /**
+     * Searches the binary tree for a value
+     *
+     * @param focusNode the root node.
+     * @param value the search term.
+     * @return the result.
+     */
+    public Node findNode(Node focusNode, String value) {
+        if (focusNode == null || focusNode.name.equals(value))
+        {
+            return focusNode;
         }
 
-        return focusNode;
+        // Recursively search left and right subtrees.
+        Node foundNode = findNode(focusNode.leftChild, value);
+
+        if (foundNode == null)
+        {
+            foundNode = findNode(focusNode.rightChild, value);
+        }
+
+        return foundNode;
     }
 }
 
@@ -179,11 +221,5 @@ class Node {
     public String toString() {
 
         return name + " has the key " + key;
-
-        /*
-         * return name + " has the key " + key + "\nLeft Child: " + leftChild +
-         * "\nRight Child: " + rightChild + "\n";
-         */
-
     }
 }

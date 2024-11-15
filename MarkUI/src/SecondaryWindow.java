@@ -1,11 +1,10 @@
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -16,25 +15,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
-/**
- * SecondaryWindow.java
- *
- * This class stores data and handles processes required to display GUI elements and necessary functionality for the Automation Console.
- *
- * Version 1.00.
- * Author: Ryhan Khan.
- */
+/****************************************************************
+ PROGRAM:   SecondaryWindow.java
+ AUTHOR:    Ryhan Khan
+ DUE DATE:  15/11/2024
+
+ FUNCTION:  This class stores data and handles processes required to display GUI elements and necessary functionality for the Automation Console.
+ ****************************************************************/
 public class SecondaryWindow extends JFrame {
     private Socket socket = null;
-    private DataInputStream console = null;
     private DataOutputStream streamOut = null;
     private ChatClientThread2 client = null;
     private String serverName = "localhost";
     private int serverPort = 4444;
 
     private JPanel contentPane;
-    private JButton buttonCancel, button1, processButton;
-    private JTextField textField1, textField2, textField3, textField4, textField5, textField6, textField7, textField8;
+    private JButton buttonCancel, addItemButton, processButton;
+    private JTextField barcodeTextField, sectionTextField, textField3, textField4, textField5, textField6, textField7, textField8;
     private JTextArea textArea1;
     private JComboBox actionsDropdown;
     private JScrollPane tableScrollPane;
@@ -50,19 +47,24 @@ public class SecondaryWindow extends JFrame {
         setSize(800, 600);
         setTitle("Automation Console");
 
+        tableModel.getTable().setRowSelectionInterval(0, 0); // Selects the first item on the table by default.
+
+        // Binds the window close functionality to the cancel button.
         buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onCancel();
             }
         });
 
+        // Binds the process functionality to the process button.
         processButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onProcess();
             }
         });
 
-        textField2.getDocument().addDocumentListener(new DocumentListener() {
+        // Binds the hide/show add item button functionality to the section text field.
+        sectionTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 checkAddVisibility();
@@ -79,7 +81,8 @@ public class SecondaryWindow extends JFrame {
             }
         });
 
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        // Binds the add item functionality to the add item button.
+        addItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 onAddItem();
             }
@@ -105,7 +108,7 @@ public class SecondaryWindow extends JFrame {
             }
         }, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0), javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        connect(serverName, serverPort);
+        connect(serverName, serverPort); // connects this program to the server.
     }
 
     /**
@@ -113,8 +116,7 @@ public class SecondaryWindow extends JFrame {
      * This method gets called each time the user presses the cancel button.
      */
     private void onCancel() {
-        // add your code here if necessary
-        dispose();
+        dispose(); // Clears window resources.
     }
 
     /**
@@ -122,13 +124,14 @@ public class SecondaryWindow extends JFrame {
      * This method is called each time the user enters data into the section text field.
      */
     private void checkAddVisibility() {
-        if (textField2.getText().equals(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()))
+        // Checks if the section text field matches the selected section in the table.
+        if (sectionTextField.getText().equals(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()))
         {
-            button1.setEnabled(false);
+            addItemButton.setEnabled(false); // disables the button.
             return;
         }
 
-        button1.setEnabled(true);
+        addItemButton.setEnabled(true); // enables the button.
     }
 
     /**
@@ -136,7 +139,7 @@ public class SecondaryWindow extends JFrame {
      * This method gets called each time the user presses the add item button.
      */
     private void onAddItem() {
-//        for (a)
+
     }
 
     /**
@@ -150,9 +153,10 @@ public class SecondaryWindow extends JFrame {
     }
 
     private void onTableClick() {
-        textField2.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()); // Sets the 'section' text field to the table column.
-        textField1.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString()); // Sets the 'barcode' text field to the table column.
+        sectionTextField.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 2).toString()); // Sets the 'section' text field to the table column.
+        barcodeTextField.setText(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString()); // Sets the 'barcode' text field to the table column.
 
+        // Creates a new CD object.
         selectedCD = new ArchiveCD(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 1).toString(), tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 3).toString().charAt(0), Integer.parseInt(tableModel.getTable().getModel().getValueAt(tableModel.getTable().getSelectedRow(), 5).toString()));
     }
 
@@ -162,22 +166,20 @@ public class SecondaryWindow extends JFrame {
      */
     private void createUIComponents() {
         DataManager dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt");
-        fileData = dataManager.loadFile();
+        fileData = dataManager.loadFile(); // Loads data from the selected file.
 
-
-        tableModel = new ArchiveCDTable(fileData.toObjectArray(), 7);
-
-        tableScrollPane = new JScrollPane(tableModel.getTable());
+        tableModel = new ArchiveCDTable(fileData.toObjectArray(), 7); // Creates the table.
+        tableScrollPane = new JScrollPane(tableModel.getTable()); // Attaches the table to the scroll pane.
 
         actionsDropdown = new JComboBox();
 
-        actionsDropdown.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String value = actionsDropdown.getSelectedItem().toString();
-                System.out.println(value);
-            }
-        });
+//        // Binds an action to the dropdown menu.
+//        actionsDropdown.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String value = actionsDropdown.getSelectedItem().toString();
+//            }
+//        });
     }
 
     /**
@@ -188,20 +190,21 @@ public class SecondaryWindow extends JFrame {
      */
     public void connect(String serverName, int serverPort)
     {
-        System.out.println("Establishing connection. Please wait ...");
+        serverStatusText.setText("Establishing connection. Please wait ..."); // Updates server connection status label.
+
         try
         {
             socket = new Socket(serverName, serverPort);
-            System.out.println("Connected: " + socket);
+            serverStatusText.setText("Connected: " + socket);
             open();
         }
         catch (UnknownHostException uhe)
         {
-            System.out.println("Host unknown: " + uhe.getMessage());
+            serverStatusText.setText("Host unknown: " + uhe.getMessage()); // Updates server connection status label with warning message.
         }
         catch (IOException ioe)
         {
-            System.out.println("Unexpected exception: " + ioe.getMessage());
+            serverStatusText.setText("Unexpected exception: " + ioe.getMessage()); // Updates server connection status label with error message.
         }
     }
 
@@ -213,11 +216,11 @@ public class SecondaryWindow extends JFrame {
         try
         {
             streamOut = new DataOutputStream(socket.getOutputStream());
-            client = new ChatClientThread2(this, socket);
+            client = new ChatClientThread2(this, socket); // Initializes server client.
         }
         catch (IOException ioe)
         {
-            System.out.println("Error opening output stream: " + ioe);
+            serverStatusText.setText("Error opening output stream: " + ioe); // Updates server connection status label with error message.
         }
     }
 
@@ -230,19 +233,20 @@ public class SecondaryWindow extends JFrame {
         {
             if (streamOut != null)
             {
-                streamOut.close();
+                streamOut.close(); // Closes stream.
             }
             if (socket != null)
             {
-                socket.close();
+                socket.close(); // Closes socket.
             }
         }
         catch (IOException ioe)
         {
-            System.out.println("Error closing ...");
+            serverStatusText.setText("Error closing ..."); // Updates server connection status label with error message.
         }
-        client.close();
-        client.interrupt();
+
+        client.close(); // Closes client;
+        client.interrupt(); // Stops the client.
     }
 
     /**
@@ -252,18 +256,17 @@ public class SecondaryWindow extends JFrame {
     private void send() {
         try
         {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
-
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma"); // Sets the format of the date text.
             String output = LocalDateTime.now().format(dtf) + " - RCVD - " + actionsDropdown.getSelectedItem() + " - "  + selectedCD.getBarcode() + " " + selectedCD.getTitle() + ";" + tableModel.getTable().getSelectedRow();
 
-            streamOut.writeUTF(output);
+            streamOut.writeUTF(output); // Writes the message to the output stream.
             streamOut.flush();
             serverStatusText.setText("sent.");
         }
         catch (IOException ioe)
         {
-            System.out.println("Sending error: " + ioe.getMessage());
-            close();
+            serverStatusText.setText("Sending error: " + ioe.getMessage()); // Updates server connection status label with error message.
+            close(); // Close the connection.
         }
     }
 
@@ -274,17 +277,20 @@ public class SecondaryWindow extends JFrame {
      */
     public void handle(String msg)
     {
-        if (msg.equals(".bye"))
+        // Checks if the message is ".bye".
+        if (StringUtils.equals(msg, ".bye"))
         {
-            System.out.println("Good bye. Press EXIT button to exit ...");
-            close();
+            serverStatusText.setText("Good bye. Press EXIT button to exit ...");
+            close(); // Closes the connection.
         }
         else
         {
-            String[] temp = msg.split(";");
+            String[] temp = msg.split(";"); // Splits the message using semicolons as a divider.
 
+            // Checks if a sort action has been requested.
             if (temp[1].equals("Mostly Sort") || temp[1].equals("Random Sort") || temp[1].equals("Reverse Sort"))
             {
+                // Updates the text fields.
                 sortText.setText(temp[1]);
                 sortSection = temp[2].charAt(0);
                 actionsDropdown.setSelectedItem("Sort");
@@ -292,14 +298,15 @@ public class SecondaryWindow extends JFrame {
                 return;
             }
 
-            textField1.setText(temp[1]);
-            textField2.setText(temp[2]);
+            // Updates the text fields.
+            barcodeTextField.setText(temp[1]);
+            sectionTextField.setText(temp[2]);
             actionsDropdown.setSelectedItem(temp[3]);
 
-            selectedCD = new ArchiveCD(temp[4], temp[2].charAt(0), Integer.parseInt(temp[1]));
-            tableModel.getTable().setRowSelectionInterval(Integer.parseInt(temp[5]), Integer.parseInt(temp[5]));
+            selectedCD = new ArchiveCD(temp[4], temp[2].charAt(0), Integer.parseInt(temp[1])); // Creates a CD object using the values from the message.
+            tableModel.getTable().setRowSelectionInterval(Integer.parseInt(temp[5]), Integer.parseInt(temp[5])); // Sets the selected row on the table.
 
-            serverStatusText.setText("received.");
+            serverStatusText.setText("received."); // Updates the server connection progress label.
         }
     }
 
@@ -307,6 +314,7 @@ public class SecondaryWindow extends JFrame {
      * This method will check to see which sorting algorithm should be executed.
      */
     private void sortTable() {
+        // Checks which sorting algorithm will be used.
         switch (sortText.getText())
         {
             case "Random Sort":
@@ -320,45 +328,65 @@ public class SecondaryWindow extends JFrame {
                 break;
         }
     }
-    
+
+    /**
+     * This method will 'mostly' sort the table.
+     */
     private void mostlySort() {
         tableModel.updateTable(tableModel.insertionSortForSection(sortSection, fileData.dataCollection)); // Refreshes the table to display the sorted data.
     }
 
+    /**
+     * This method will sort the table in reverse.
+     */
     private void reverseSort() {
-        Object[][] tempArr = tableModel.shellSortByTitle(fileData.dataCollection);
-        reverse2DArray(tempArr);
-        tableModel.updateTable(tempArr);
+        Object[][] tempArr = tableModel.shellSortByTitle(fileData.dataCollection); // Sorts the array using a shell sort.
+        reverseArray(tempArr); // Reverses the array.
+        tableModel.updateTable(tempArr); // Refreshes the table to display the sorted data.
     }
 
-    public static void reverse2DArray(Object[][] array) {
-        reverseArray(array);
-    }
-
-    private static void reverseArray(Object[] row) {
+    /**
+     * This method will reverse an object array.
+     *
+     * @param row the array that will be sorted.
+     */
+    private void reverseArray(Object[] row) {
         int left = 0;
         int right = row.length - 1;
-        while (left < right) {
-            Object temp = row[left];
+
+        // Loops through each item in the array.
+        while (left < right)
+        {
+            Object temp = row[left]; // Stores the first object.
+
+            // Swaps the items around.
             row[left] = row[right];
             row[right] = temp;
+
+            // Moves onto the next element.
             left++;
             right--;
         }
     }
 
+    /**
+     * This method will randomly sort the table.
+     */
     private void randomSort() {
         ArrayList<Vector<Object>> rows = new ArrayList<>();
-        for (int i = 0; i < tableModel.getTable().getModel().getRowCount(); i++) {
-            Vector<Object> row = (Vector<Object>) tableModel.model.getDataVector().get(i);
+
+        // Loops through each item in the table.
+        for (int i = 0; i < tableModel.getTable().getModel().getRowCount(); i++)
+        {
+            Vector<Object> row = tableModel.model.getDataVector().get(i); // Gets the table row.
             rows.add(row);
         }
 
-        // Shuffle the list of rows
-        Collections.shuffle(rows);
+        Collections.shuffle(rows); // Shuffle all rows.
 
-        // Clear the model and add shuffled rows back
-        tableModel.model.setRowCount(0);
+        tableModel.model.setRowCount(0); // Clears the model.
+
+        // Adds shuffled rows back to the table.
         for (Vector<Object> row : rows)
         {
             tableModel.model.addRow(row.toArray());
