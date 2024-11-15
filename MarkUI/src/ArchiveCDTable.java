@@ -228,36 +228,40 @@ public class ArchiveCDTable {
         return toObjectArray(sortedArray); // Returns an object array
     }
 
-
+    /**
+     * This method sorts an ArchiveCD array using an insertion sort.
+     * Note: This used for reading purposes and does not affect the order of the original data collection.
+     *
+     * @param section the target section that will be sorted.
+     * @param originalArray the ArchiveCD array that is being sorted.
+     *
+     * @return a 2-Dimensional Object Array that can be used by Java UI elements.
+     */
     public Object[][] insertionSortForSection(char section, ArchiveCD[] originalArray) {
-
         int arrayLength = 0;
         ArrayList<ArchiveCD> tempStringList = new ArrayList<>();
 
+        // Loops through each item in the array.
         for (int i = 0; i < originalArray.length; i++)
         {
-            if (originalArray[i] != null)
+            if (originalArray[i].getSection() == section && originalArray[i] != null)
             {
-                if (originalArray[i].getSection() == section)
-                {
-                    tempStringList.add(originalArray[i]);
-                    arrayLength++; // Counts how many valid items are in the array.
-
-                }
-
+                tempStringList.add(originalArray[i]);
+                arrayLength++; // Counts how many valid items are in the array.
             }
         }
 
         String[] tempArr = new String[arrayLength]; // Creates an array to store CD barcodes.
-        ArchiveCD[] sortedArray = new ArchiveCD[originalArray.length]; // Sets the sorted array
+        ArchiveCD[] sortedArray = new ArchiveCD[originalArray.length]; // Sets the sorted array to the same size as teh original array.
 
+        // Loops through each item in the temp array.
         for (int i = 0; i < tempStringList.toArray().length; i++)
         {
-            tempArr[i] = tempStringList.get(i).getTitle();
+            tempArr[i] = tempStringList.get(i).getTitle(); // Copies the value from the temp array.
         }
 
         InsertionSort sortAlgorithm = new InsertionSort();
-        sortAlgorithm.insertionSort(tempArr); //  Runs the shell sort algorithm on the temp array.
+        sortAlgorithm.insertionSort(tempArr); //  Runs the insertion sort algorithm on the temp array.
 
         // Cycles through each title.
         for (int i = 0; i < tempArr.length; i++)

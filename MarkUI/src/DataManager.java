@@ -22,7 +22,7 @@ public class DataManager
     }
 
     /**
-     *
+     * Gets the file name for the save data file.
      *
      * @return the file name that is used to save/load data.
      */

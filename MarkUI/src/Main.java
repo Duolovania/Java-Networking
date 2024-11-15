@@ -6,9 +6,10 @@ import javax.swing.JLabel;
 public class Main implements IApp {
     public static void main(String[] args) {
         ChatServer server;
+
+        // Starts the server.
         if (args.length != 1)
         {
-            //System.out.println("Usage: java ChatServer port");
             server = new ChatServer(4444);
         }
         else
@@ -22,6 +23,7 @@ public class Main implements IApp {
         app.start();
 
 
+        // Runs both windows at the same time.
         javax.swing.SwingUtilities.invokeLater(() -> {
             MainWindow mainWindow = new MainWindow(); // Creates a new window.
             mainWindow.pack(); // Sets the window size to the preferred size and layouts.

@@ -73,6 +73,13 @@ public class ArchiveCD
         mOnLoan = onLoan;
     }
 
+    /**
+     * This constructor takes in a few details required for an entry.
+     *
+     * @param title The label for the CD.
+     * @param section The section for the CD.
+     * @param barcode The barcode number for the CD.
+     */
     public ArchiveCD(String title, char section, int barcode) {
         mTitle = title;
         mSection = section;
