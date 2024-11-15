@@ -346,7 +346,7 @@ public class ArchiveCDTable {
      * @param dataCollection The array that is being converted.
      * @return An array converted to a suitable format that can be used in the application.
      */
-    private Object[][] toObjectArray(ArchiveCD[] dataCollection) {
+    public Object[][] toObjectArray(ArchiveCD[] dataCollection) {
         int arrayLength = 0; // Sets the number of rows to 0 by default.
         for (int i = 0; i < dataCollection.length; i++) if (dataCollection[i] != null) arrayLength++; // Counts how many valid items are in the array. 'Valid items' are items that are not null.
 

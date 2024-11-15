@@ -83,6 +83,8 @@ public class SecondaryWindow extends JFrame {
             public void mouseClicked(MouseEvent e) { onTableClick(); }
         });
 
+        tableModel.getTable().setRowSelectionInterval(0, 0);
+
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -247,6 +249,7 @@ public class SecondaryWindow extends JFrame {
             actionsDropdown.setSelectedItem(temp[3]);
 
             selectedCD = new ArchiveCD(temp[4], temp[2].charAt(0), Integer.parseInt(temp[1]));
+            tableModel.updateTable(tableModel.toObjectArray(fileData.dataCollection));
             tableModel.getTable().setRowSelectionInterval(Integer.parseInt(temp[5]), Integer.parseInt(temp[5]));
 
             serverStatusText.setText("received.");

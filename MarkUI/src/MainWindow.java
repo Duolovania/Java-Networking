@@ -398,7 +398,7 @@ public class MainWindow extends javax.swing.JFrame {
             return;
         }
 
-        send(" ;Mostly Sort;" + sortTextField.getText().charAt(0));
+        send(";Mostly Sort;" + sortTextField.getText().charAt(0));
     }
 
     private void onRandomSort() {
@@ -567,7 +567,7 @@ public class MainWindow extends javax.swing.JFrame {
 //                binaryTree.findNode(value);
                 break;
             case LinkedList:
-                doublyLinkedList.find(value);
+//                doublyLinkedList.find(value);
                 break;
         }
     }
