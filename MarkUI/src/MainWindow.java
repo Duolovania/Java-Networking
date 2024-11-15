@@ -538,6 +538,7 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private void onHashSave() {
         binaryTree.genHashMap(binaryTree.root); // Generates the hashmap.
+        dataManager.saveHashMap("HashmapData.txt", binaryTree.hashMap); // Saves the hashmap to file.
     }
 
     /**
@@ -547,6 +548,7 @@ public class MainWindow extends javax.swing.JFrame {
      * This will display the hashmap data onto the screen.
      */
     private void onHashDisplay() {
+        binaryTree.genHashMap(binaryTree.root); // Generates the hashmap.
         processTextArea.setText(binaryTree.hashDisplay()); // Displays the hashmap on the process log text area.
     }
 
@@ -568,7 +570,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         StringBuilder output = new StringBuilder();
         output.append(LocalDateTime.now().format(dtf)).append(" - SENT - Return Item - ").append(barcodeTextField.getText()).append(" ").append(titleTextField.getText()); // Strings together the log output.
-//        String output = LocalDateTime.now().format(dtf) + " - SENT - Return Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
 
         doublyLinkedList.insertAtEnd(output + "\n"); // Adds the output to the doubly linked list.
         processTextArea.setText(doublyLinkedList.display()); // Refreshes the process log.
@@ -576,7 +577,6 @@ public class MainWindow extends javax.swing.JFrame {
         output.delete(0, output.length()); // Clears the string builder.
         output.append(";").append(barcodeTextField.getText()).append(";").append(sectionTextField.getText()).append(";Return;").append(titleTextField.getText()).append(";").append(tableModel.getTable().getSelectedRow()); // Strings together the message.
 
-//        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Return;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
         send(output.toString()); // Sends the message to the Automation Console.
     }
 
@@ -596,6 +596,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
+//        // Before optimization.
 //        String output = LocalDateTime.now().format(dtf) + " - SENT - Retrieve Item - " + barcodeTextField.getText() + " " + titleTextField.getText();
 //
 //        doublyLinkedList.insertAtEnd(output + "\n");
@@ -603,8 +604,6 @@ public class MainWindow extends javax.swing.JFrame {
 //
 //        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Retrieve;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
 //        send(message);
-
-
 
         StringBuilder output = new StringBuilder();
         output.append(LocalDateTime.now().format(dtf)).append(" - SENT - Retrieve Item - ").append(barcodeTextField.getText()).append(" ").append(titleTextField.getText()); // Strings together the log output.
@@ -634,15 +633,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
 
-//        String output = LocalDateTime.now().format(dtf) + " - SENT - Add Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
-//
-//        doublyLinkedList.insertAtEnd(output + "\n");
-//        processTextArea.setText(doublyLinkedList.display());
-//
-//        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Add;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
-//        send(message);
-
-
         StringBuilder output = new StringBuilder();
         output.append(LocalDateTime.now().format(dtf)).append(" - SENT - Add Item - ").append(barcodeTextField.getText()).append(" ").append(titleTextField.getText()); // Strings together the log output.
 
@@ -670,14 +660,6 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy - h:mma");
-
-//        String output = LocalDateTime.now().format(dtf) + " - SENT - Remove Item -" + barcodeTextField.getText() + " " + titleTextField.getText();
-//
-//        doublyLinkedList.insertAtEnd(output + "\n");
-//        processTextArea.setText(doublyLinkedList.display());
-//
-//        String message = ";" + barcodeTextField.getText() + ";" + sectionTextField.getText() + ";Remove;" + titleTextField.getText() + ";" + tableModel.getTable().getSelectedRow();
-//        send(message);
 
         StringBuilder output = new StringBuilder();
         output.append(LocalDateTime.now().format(dtf)).append(" - SENT - Remove Item - ").append(barcodeTextField.getText()).append(" ").append(titleTextField.getText()); // Strings together the log output.
@@ -709,7 +691,7 @@ public class MainWindow extends javax.swing.JFrame {
                 binaryTree.findNode(binaryTree.root, value);
                 break;
             case LinkedList:
-//                doublyLinkedList.find(value);
+                doublyLinkedList.find(value);
                 break;
         }
     }
@@ -887,7 +869,6 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private boolean isNullOrEmpty(String text)
     {
-//        if (text == null || text.isEmpty()) return true;
         if (StringUtils.isEmpty(text)) return true;
         return false;
     }

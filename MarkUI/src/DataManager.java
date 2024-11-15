@@ -2,6 +2,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.*;
 
 /**
  * DataManager.java
@@ -56,6 +59,36 @@ public class DataManager
                 output.newLine(); // Creates a new line.
             }
 
+            output.close();
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex.getMessage()); // Outputs an error message if an error has occurred.
+        }
+    }
+
+    /**
+     * Writes newly hashmap data to file.
+     *
+     * @param name the file name.
+     * @param hashMap the saved hashmap.
+     */
+    public void saveHashMap(String name, HashMap<String, List<String>> hashMap)
+    {
+        try
+        {
+            BufferedWriter output = new BufferedWriter(new FileWriter(name)); // Retrieves data from the file path.
+
+            // Loops through each item in the hashmap.
+            for (Map.Entry<String, List<String>> entry : hashMap.entrySet())
+            {
+                output.write(entry.getKey() + ": "); // Write the key.
+                output.write(String.join(", ", entry.getValue())); // Write the list values, joined by a comma.
+
+                output.newLine(); // Adds a new line.
+            }
+
+            System.out.println("HashMap values saved to " + name);
             output.close();
         }
         catch (Exception ex)
