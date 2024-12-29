@@ -6,16 +6,16 @@
 import java.net.*;
 import java.io.*;
 
-public class ChatServer implements Runnable
+public class Server implements Runnable
 {
 
-    private ChatServerThread clients[] = new ChatServerThread[50];
+    private ClientThread clients[] = new ClientThread[50];
     private ServerSocket server = null;
     private Thread thread = null;
     private int clientCount = 0;
 
 
-    public ChatServer(int port)
+    public Server(int port)
     {
         try
         {
@@ -98,7 +98,7 @@ public class ChatServer implements Runnable
         int pos = findClient(ID);
         if (pos >= 0)
         {
-            ChatServerThread toTerminate = clients[pos];
+            ClientThread toTerminate = clients[pos];
             System.out.println("Removing client thread " + ID + " at " + pos);
             if (pos < clientCount - 1)
             {
@@ -125,7 +125,7 @@ public class ChatServer implements Runnable
         if (clientCount < clients.length)
         {
             System.out.println("Client accepted: " + socket);
-            clients[clientCount] = new ChatServerThread(this, socket);
+            clients[clientCount] = new ClientThread(this, socket);
             try
             {
                 clients[clientCount].open();

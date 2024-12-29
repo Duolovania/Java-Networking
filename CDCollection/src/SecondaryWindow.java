@@ -25,7 +25,7 @@ import java.util.Vector;
 public class SecondaryWindow extends JFrame {
     private Socket socket = null;
     private DataOutputStream streamOut = null;
-    private ChatClientThread2 client = null;
+    private SecondWindowThread client = null;
     private String serverName = "localhost";
     private int serverPort = 4444;
 
@@ -216,7 +216,7 @@ public class SecondaryWindow extends JFrame {
         try
         {
             streamOut = new DataOutputStream(socket.getOutputStream());
-            client = new ChatClientThread2(this, socket); // Initializes server client.
+            client = new SecondWindowThread(this, socket); // Initializes server client.
         }
         catch (IOException ioe)
         {

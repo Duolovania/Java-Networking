@@ -6,16 +6,16 @@
 import java.net.*;
 import java.io.*;
 
-public class ChatServerThread extends Thread
+public class ClientThread extends Thread
 {
 
-    private ChatServer server = null;
+    private Server server = null;
     private Socket socket = null;
     private int ID = -1;
     private DataInputStream streamIn = null;
     private DataOutputStream streamOut = null;
 
-    public ChatServerThread(ChatServer _server, Socket _socket)
+    public ClientThread(Server _server, Socket _socket)
     {
         super();
         server = _server;

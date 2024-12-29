@@ -1,20 +1,18 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 public class Main implements IApp {
     public static void main(String[] args) {
-        ChatServer server;
+        Server server;
 
         // Starts the server.
         if (args.length != 1)
         {
-            server = new ChatServer(4444);
+            server = new Server(4444);
         }
         else
         {
-            server = new ChatServer(Integer.parseInt(args[0]));
+            server = new Server(Integer.parseInt(args[0]));
         }
 
         IApp app = new Main();

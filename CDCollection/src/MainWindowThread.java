@@ -2,19 +2,18 @@
 //  Creating a simple Chat Client1/Server Solution
 //  http://pirate.shu.edu/~wachsmut/Teaching/CSAS2214/Virtual/Lectures/chat-client-server.html
 
-
 import java.net.*;
 import java.io.*;
 
-public class ChatClientThread2 extends Thread
+public class MainWindowThread extends Thread
 {
     private Socket socket = null;
-    private SecondaryWindow client2 = null;
+    private MainWindow client1 = null;
     private DataInputStream streamIn = null;
 
-    public ChatClientThread2(SecondaryWindow _client2, Socket _socket)
+    public MainWindowThread(MainWindow _client1, Socket _socket)
     {
-        client2 = _client2;
+        client1 = _client1;
         socket = _socket;
         open();
         start();
@@ -29,8 +28,8 @@ public class ChatClientThread2 extends Thread
         catch (IOException ioe)
         {
             System.out.println("Error getting input stream: " + ioe);
-//            client2.stop();
-            client2.close();
+//            client1.interrupt();
+            client1.close();
         }
     }
 
@@ -55,13 +54,13 @@ public class ChatClientThread2 extends Thread
         {
             try
             {
-                client2.handle(streamIn.readUTF());
+                client1.handle(streamIn.readUTF());
             }
             catch (IOException ioe)
             {
                 System.out.println("Listening error: " + ioe.getMessage());
-//                client2.stop();
-                client2.close();
+//                client1.stop();
+                client1.close();
             }
         }
     }

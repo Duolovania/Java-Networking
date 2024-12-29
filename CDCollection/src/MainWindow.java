@@ -28,7 +28,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private Socket socket = null;
     private DataOutputStream streamOut = null;
-    private ChatClientThread1 client = null;
+    private MainWindowThread client = null;
     private String serverName = "localhost";
     private int serverPort = 4444;
 
@@ -766,7 +766,7 @@ public class MainWindow extends javax.swing.JFrame {
         try
         {
             streamOut = new DataOutputStream(socket.getOutputStream());
-            client = new ChatClientThread1(this, socket); // Initializes server client.
+            client = new MainWindowThread(this, socket); // Initializes server client.
         }
         catch (IOException ioe)
         {
