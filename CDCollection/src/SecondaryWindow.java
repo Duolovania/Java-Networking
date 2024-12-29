@@ -165,7 +165,7 @@ public class SecondaryWindow extends JFrame {
      * This method creates the initial table model and loads data from the .txt file.
      */
     private void createUIComponents() {
-        DataManager dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt");
+        DataManager dataManager = new DataManager("CD_FileData.txt");
         fileData = dataManager.loadFile(); // Loads data from the selected file.
 
         tableModel = new ArchiveCDTable(fileData.toObjectArray(), 7); // Creates the table.

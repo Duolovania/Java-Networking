@@ -701,7 +701,7 @@ public class MainWindow extends javax.swing.JFrame {
      * This method creates the initial table model and loads data from the .txt file.
      */
     private void createUIComponents() {
-        dataManager = new DataManager("CD_ArchivePrototype_SampleData.txt"); // Creates a new data manager and loads the data file name.
+        dataManager = new DataManager("CD_FileData.txt"); // Creates a new data manager and loads the data file name.
         fileData = dataManager.loadFile(); // Reads data from the loaded file.
 
         // Checks if the loaded data is not valid.
