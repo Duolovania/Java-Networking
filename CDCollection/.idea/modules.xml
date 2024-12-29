@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MarkUI.iml" filepath="$PROJECT_DIR$/MarkUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CDCollection.iml" filepath="$PROJECT_DIR$/CDCollection.iml" />
     </modules>
   </component>
 </project>
