@@ -4,7 +4,7 @@ The project features UI elements and simple communication between separate windo
 This was created for an assignment in 2024.
 
 ## Quick Preview for the Project:
-[![Pygame-Quiz](https://img.youtube.com/vi/Q_Zf5qrlMJk/0.jpg)](https://www.youtube.com/watch?v=Q_Zf5qrlMJk)
+[![Java-Networking](https://img.youtube.com/vi/Q_Zf5qrlMJk/0.jpg)](https://www.youtube.com/watch?v=Q_Zf5qrlMJk)
 
 ## What I Learned:
 * Socket programming.
